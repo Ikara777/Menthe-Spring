@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link th:href="@{/css/artItemDtl.css}" rel="stylesheet">
+</head>
+
+<th:block layout:fragment="script">
+  <script th:inline="javascript">
+
+    //-------------- 채팅 연결 스크립트 ----------------------
+      $(document).ready(function () {
+          const csrfToken = $('meta[name="_csrf"]').attr('content');
+          const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+          const chatLogs = $('#chatLogs');
+          const chatForm = $('#chatForm');
+          const userId = $('div.user-info').data('user-id');
+
+          const pageSize = 20; // 한 번에 가져올 데이터 개수
+
+          // 초기 로딩 시 스크롤을 맨 아래로 이동
+          function scrollToBottom() {
+              chatLogs.scrollTop(chatLogs[0].scrollHeight);
+          }
+
+          // 채팅 로그 전체 새로고침
+          function refreshChatLogs() {
+              $.ajax({
+                  url: `/chat/popup/${userId}`,
+                  type: "GET",
+                  data: { size: pageSize },
+                  beforeSend: function (xhr) {
+                      xhr.setRequestHeader(csrfHeader, csrfToken);
+                  },
+                  success: function (data) {
+                      chatLogs.find('ul').empty(); // 기존 로그 초기화
+                      if (data.chatLogs && data.chatLogs.length > 0) {
+                          data.chatLogs.forEach(function (message) {
+                              const newMessage = `<li>${message.senderId}: ${message.message}</li>`;
+                              chatLogs.find('ul').append(newMessage); // 전체 로그 추가
+                          });
+                          scrollToBottom(); // 하단으로 스크롤 이동
+                      } else {
+                          chatLogs.find('ul').html('<li>채팅 로그가 없습니다.</li>'); // 로그 없음 표시
+                      }
+                  },
+                  error: function (jqXHR) {
+                      console.error("채팅 로그 새로고침 실패:", jqXHR.responseText);
+                  },
+              });
+          }
+
+          // 메시지 전송
+          chatForm.on('submit', function (e) {
+              e.preventDefault();
+              const formData = $(this).serialize();
+
+              $.ajax({
+                  url: `/chat/popup/${userId}`,
+                  type: "POST",
+                  contentType: "application/x-www-form-urlencoded",
+                  data: formData,
+                  beforeSend: function (xhr) {
+                      xhr.setRequestHeader(csrfHeader, csrfToken);
+                  },
+                  success: function (data) {
+                      refreshChatLogs(); // 메시지 전송 후 전체 새로고침
+                      chatForm[0].reset();
+                  },
+                  error: function (jqXHR) {
+                      console.error("메시지 전송 실패:", jqXHR.responseText);
+                  },
+              });
+          });
+
+          // 실시간 갱신: 3초마다 전체 로그 새로고침
+          setInterval(refreshChatLogs, 3000);
+
+          // 초기화
+          scrollToBottom();
+          refreshChatLogs(); // 페이지 로드 시 전체 로그 불러오기
+      });
+
+
+      //----------------------------------------------------
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // 서버에서 전달받은 경매 종료 시간 (item.eventEnd을 통해 전달)
+        let auctionEndTime = [[${item.eventEnd}]]  // 예: "2025-01-09T00:00"
+        console.log(auctionEndTime);
+        let startTime = [[${item.eventStart}]]
+
+
+        // 경매 종료 시간을 Date 객체로 변환 (UTC 시간으로 해석)
+        const endDate = new Date(auctionEndTime);
+        console.log(endDate);
+
+        const startDate = new Date(startTime)
+        console.log(startTime)
+        // 현재 시간을 로컬 시간으로 가져오기
+        const currentDate = new Date();  // 로컬 시간
+
+        // 현재 시간에 9시간을 더함
+        currentDate.setTime(currentDate.getTime() + 9);
+        console.log(currentDate);
+
+        const countdownElement = document.getElementById("countdown");
+
+        if (startDate > currentDate){
+            alert("현재 경매시간이 아닙니다.")
+            return ;
+        }
+
+        if (!startDate || startDate.getTime() == NaN){
+            alert("현재 경매시간이 아닙니다.")
+            return ;
+        }
+
+        if (countdownElement) {
+            if (!endDate || endDate === "경매 종료되었습니다." || endDate === "경매 종료 시간이 설정되지 않았습니다.") {
+                countdownElement.textContent = endDate || "경매 종료 시간이 잘못 전달되었습니다.";
+            } else {
+                // 남은 시간 계산 (단위: 밀리초)
+                let remainingTimeInMillis = endDate - currentDate;
+
+                // 경매가 종료되었을 경우
+                if (remainingTimeInMillis <= 0) {
+                    countdownElement.textContent = "경매 종료되었습니다.";
+                } else {
+                    // 남은 시간 초단위로 변환
+                    const remainingTimeInSeconds = Math.floor(remainingTimeInMillis / 1000);
+
+                    // 시, 분, 초 계산
+                    const hours = Math.floor(remainingTimeInSeconds / 3600);
+                    const minutes = Math.floor((remainingTimeInSeconds % 3600) / 60);
+                    const seconds = remainingTimeInSeconds % 60;
+
+                    // 남은 시간 표시
+                    countdownElement.textContent = `남은 시간: ${hours}시간 ${minutes}분 ${seconds}초`;
+
+                    // 1초마다 남은 시간 갱신
+                    const countdownInterval = setInterval(function() {
+                        remainingTimeInMillis -= 1000;
+
+                        // 경매 시간이 종료되면
+                        if (remainingTimeInMillis <= 0) {
+                            clearInterval(countdownInterval);
+                            countdownElement.textContent = "경매 종료되었습니다.";
+                        } else {
+                            const remainingTimeInSeconds = Math.floor(remainingTimeInMillis / 1000);
+                            const hours = Math.floor(remainingTimeInSeconds / 3600);
+                            const minutes = Math.floor((remainingTimeInSeconds % 3600) / 60);
+                            const seconds = remainingTimeInSeconds % 60;
+
+                            countdownElement.textContent = `남은 시간: ${hours}시간 ${minutes}분 ${seconds}초`;
+                        }
+                    }, 1000); // 1초마다 시간 갱신
+                }
+            }
+        }
+
+        const auctionChartCtx = document.getElementById('auctionChart').getContext('2d');
+        const auctionChart = new Chart(auctionChartCtx, {
+            type: 'line',
+            data: {
+                labels: [],  // 경매 시간대 (X축)
+                datasets: [{
+                    label: 'Bid Amount',
+                    data: [],  // 응찰 금액 (Y축)
+                    borderColor: 'rgb(75, 192, 192)',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                }
+            }
+        });
+
+        function formatTime(timeString) {
+          const date = new Date(timeString);
+          const hours = String(date.getHours()).padStart(2, '0');
+          const minutes = String(date.getMinutes()).padStart(2, '0');
+          const seconds = String(date.getSeconds()).padStart(2, '0');
+          return `${hours}:${minutes}:${seconds}`;
+        }
+
+        function fetchBidData() {
+          const artItemId = [[${item.id}]];  // 서버에서 전달받은 경매 아이템 ID
+
+          fetch(`/api/artItem/${artItemId}/bids`)  // 해당 경매 아이템의 응찰 기록을 가져오는 API 호출
+            .then(response => response.json())
+            .then(bids => {
+              const labels = [];
+              const data = [];
+
+            // 최근 5개의 응찰 데이터만 사용
+            const recentBids = bids.slice(-5); // bids 배열의 마지막 5개 요소만 가져오기
+
+            recentBids.forEach(bid => {
+                // 응찰 시간 포맷 변경
+              const formattedTime = formatTime(bid.bidTime);
+              labels.push(formattedTime);  // 응찰 시간 (시:분:초)
+              data.push(bid.bidAmount);    // 응찰 금액
+            });
+
+              // 차트 데이터 업데이트
+            auctionChart.data.labels = labels;
+            auctionChart.data.datasets[0].data = data;
+            auctionChart.update();
+
+          })
+        .catch(error => console.error('Error fetching bid data:', error));
+      }
+
+        // 1초마다 데이터를 새로고침
+      setInterval(fetchBidData, 1000);
+
+        // 경매 응찰하기 버튼 클릭 시 팝업 열기
+        const openBidPopupButton = document.getElementById("openBidPopup");
+        const bidPopup = document.getElementById("bidPopup");
+        const overlay = document.getElementById("overlay");
+        const closeBidPopupButton = document.getElementById("closeBidPopup");
+
+        if (openBidPopupButton) {
+            openBidPopupButton.addEventListener("click", function() {
+                bidPopup.style.display = "block";
+                overlay.style.display = "block";
+            });
+        }
+
+        // 경매 응찰 팝업 닫기
+        if (closeBidPopupButton) {
+            closeBidPopupButton.addEventListener("click", function() {
+                bidPopup.style.display = "none";
+                overlay.style.display = "none";
+                location.reload();
+            });
+        }
+    });
+
+  </script>
+</th:block>
+
+<body>
+<div layout:fragment="content" style="margin-left:25%;margin-right:25%">
+
+  <input type="hidden" id="itemId" th:value="${item.id}">
+
+  <div class="d-flex">
+    <div class="left-section">
+
+      <!-- item.imgUrl이 null이 아니면 해당 이미지를 사용 -->
+      <img th:if="${not #strings.isEmpty(item.imgUrl)}"
+           th:src="${item.imgUrl}"
+           class="rounded repImg"
+           th:alt="${item.artName}">
+
+      <!-- item.imgUrl이 null이거나 비어 있으면 itemImgs의 첫 번째 이미지를 사용 -->
+      <img th:unless="${not #strings.isEmpty(item.imgUrl)}"
+           th:src="${itemImgs[0]?.imgUrl}"
+           class="rounded mgb-15">
+
+    </div>
+    <div class="right-section">
+
+      <span th:if="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL
+            and (item.eventEnd != null and item.eventEnd.isAfter(T(java.time.LocalDateTime).now()))
+            and (item.eventStart != null and item.eventStart.isBefore(T(java.time.LocalDateTime).now()))}"
+            class="badge bg-primary mgb-15">경매 진행중</span>
+      <span th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
+            class="badge bg-primary mgb-15">경매 완료</span>
+      <span th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SOLD_OUT
+            or (item.eventEnd != null and item.eventEnd.isAfter(T(java.time.LocalDateTime).now()))
+            and (item.eventStart != null and item.eventStart.isBefore(T(java.time.LocalDateTime).now()))}"
+            class="badge bg-primary mgb-15">경매시간이 아닙니다</span>
+
+
+    <div class="h4" th:text="${item.artName}"></div>
+
+
+      <div class="text-right mgt-50">
+        <div>
+          <p>응찰 금액 그래프</p>
+          <canvas id="auctionChart" width="400" height="200"></canvas>
+        </div>
+
+
+        <hr class="my-4">
+
+        <div class="price">
+        <h6>작가명</h6>
+        <h3 name="artistName" id="artistName" class="font-weight-bold"></h3>
+        <p class="name" th:text="${item.artistName}"></p>
+        </div>
+
+        <div class="price">
+        <h6>추정가</h6>
+        <h3 name="priceRange" id="priceRange" class="font-weight-bold"></h3>
+        <p class="range" th:text="${item.priceRange}">원</p>
+        </div>
+
+          <div class="price">
+        <h6>시작가</h6>
+        <h3 name="startPrice" id="startPrice" class="font-weight-bold"></h3>
+        <p class="start" th:text="${item.startPrice}">원</p>
+          </div>
+      </div>
+
+
+      <!-- SELL 상태인 경우 -->
+      <div th:if="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL
+            and (item.eventEnd != null and item.eventEnd.isAfter(T(java.time.LocalDateTime).now()))
+            and (item.eventStart != null and item.eventStart.isBefore(T(java.time.LocalDateTime).now()))}">
+        <button id="openBidPopup" type="button" class="btn btn-primary btn-lg px-4">
+          경매 응찰하기
+        </button>
+      </div>
+      <div th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SOLD_OUT
+            or (item.eventEnd != null and item.eventEnd.isAfter(T(java.time.LocalDateTime).now()))
+            and (item.eventStart != null and item.eventStart.isBefore(T(java.time.LocalDateTime).now()))}">
+        <button type="button" class="btn btn-warning btn-lg px-4">
+          경매시간이 아닙니다.
+        </button>
+      </div>
+      <div th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}">
+        <button type="button" class="btn btn-secondary btn-lg  px-4 disabled">품절</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="mgt-30">
+    <div >
+      <hr>
+      <h4 class="writer" >상품 상세 설명</h4>
+    </div>
+  </div>
+
+
+  <div class="writerDesc">
+    <div >
+      <h5><strong>작품 설명</strong></h5>
+      <div class="lead" th:text="${item.writerDesc}" style="white-space: pre-wrap;"></div>
+      <br>
+    </div>
+  </div>
+
+
+
+  <div>
+    <img th:if="${not #strings.isEmpty(item.imgUrl)}" th:src="${item.imgUrl}"
+         class="rounded mgb-15"
+         width="600">
+  </div>
+
+
+  <div>
+    <div th:each="ItemImg : ${itemImgs}" class="text-center">
+      <img th:if="${not #strings.isEmpty(ItemImg.imgUrl)}" th:src="${ItemImg.imgUrl}"
+           class="rounded mgb-15"
+           width="800">
+    </div>
+  </div>
+
+
+  <!-- 팝업 오버레이 -->
+  <div id="overlay"></div>
+
+  <!-- 경매 응찰 팝업 -->
+  <div id="bidPopup">
+    <h3>경매 응찰</h3>
+    <h2>남은 경매 시간</h2>
+    <div id="countdown">남은 시간을 계산 중...</div>
+
+    <form th:action="@{/auction/art}" method="post" onsubmit="return validateBidAmount()">
+      <input type="hidden" name="itemId" th:value="${item.id}">
+      <div>
+        <label for="bidAmount">응찰 금액:</label>
+        <select name="bidAmount" id="bidAmount" required>
+          <option value="" disabled selected>응찰 금액을 선택하세요</option>
+          <option th:each="price : ${priceOptions}" th:value="${price}" th:text="${price}">${price}</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">응찰하기</button>
+      <button id="closeBidPopup" type="button" class="btn btn-secondary">취소</button>
+    </form>
+  </div>
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+</div>
+
+</body>
+</html>

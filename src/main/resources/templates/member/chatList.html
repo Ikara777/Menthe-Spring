@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link th:href="@{/css/chatList.css}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div layout:fragment="content" class="container">
+
+  <h1>Active Chat Users</h1>
+
+  <div class="button-container">
+    <a th:each="entry : ${chatUserNames}"
+       th:href="@{/chat/{userId}(userId=${entry.key})}"
+       th:text="${entry.value}"
+       class="chat-button">
+    </a>
+  </div>
+
+</div>
+
+</body>
+</html>

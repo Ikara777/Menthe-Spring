@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<head>
+    <link th:href="@{/css/adminPage.css}" rel="stylesheet">
+
+</head>
+<body>
+<div layout:fragment="content" class="content">
+
+    <!-- 렌탈 관련 버튼들 -->
+    <div class="button-container">
+        <div>
+            <h1>렌탈물품등록</h1>
+            <hr>
+            <button onclick="location.href='/admin/rentalItemForm/new'">
+                <img th:src="@{/img/렌탈등록.png}" class="button-icon" alt="렌탈등록 아이콘" style="width: 100px; height: 120px;">
+            </button>
+        </div>
+        <div>
+            <h1>렌탈상품관리</h1>
+            <hr>
+            <button onclick="location.href='/admin/items'">
+                <img th:src="@{/img/상품관리.png}" class="button-icon" alt="상품관리 아이콘" style="width: 100px; height: 120px;">
+            </button>
+        </div>
+    </div>
+
+    <!-- 경매 관련 버튼들 -->
+    <div class="button-container">
+        <div>
+            <h1>경매물품등록</h1>
+            <hr>
+            <button onclick="location.href='/admin/artItemForm/new'">
+                <img th:src="@{/img/경매등록.png}" class="button-icon" alt="경매등록 아이콘" style="width: 100px; height: 120px;">
+            </button>
+        </div>
+        <div>
+            <h1>경매상품관리</h1>
+            <hr>
+            <button onclick="location.href='/admin/artItems'">
+                <img th:src="@{/img/상품관리.png}" class="button-icon" alt="상품관리 아이콘" style="width: 100px; height: 120px;">
+            </button>
+        </div>
+    </div>
+
+    <!-- 채팅 관리 버튼 -->
+    <div class="button-container">
+        <div>
+            <h1>채팅관리</h1>
+            <hr>
+            <button onclick="location.href='/chat/list'">
+                <img th:src="@{/img/채팅관리.png}" class="button-icon" alt="채팅 아이콘" style="width: 120px; height: 120px;">
+            </button>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

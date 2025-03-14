@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/chat.css}" rel="stylesheet">
+
+
+    <th:block layout:fragment="script">
+        <script>
+            $(document).ready(function () {
+                const chatLogs = $("#chatLogs ul"); // <ul> 요소를 선택
+
+                // 현재 URL에서 userPD 값 추출
+                const pathArray = window.location.pathname.split('/'); // URL 경로 분리
+                const userPD = pathArray[pathArray.length - 1]; // URL의 마지막 부분 추출
+
+                const username = $("#username").text(); // 현재 사용자 ID 가져오기 (POST에 사용)
+
+                // 채팅 로그 스크롤을 가장 아래로 이동하는 함수
+                function scrollToBottom() {
+                    $("#chatLogs").scrollTop($("#chatLogs")[0].scrollHeight);
+                }
+
+                // 채팅 로그 새로고침
+                function refreshChatLogs() {
+                    $.ajax({
+                        url: `/chat/adminPopup/${userPD}`, // GET 요청에서 userPD 사용
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            chatLogs.empty(); // 기존 로그 비우기
+                            if (data.chatLogs && data.chatLogs.length > 0) {
+                                data.chatLogs.forEach(log => {
+                                    const newLog = `
+                                        <li>
+                                            <p>
+                                                <strong>${log.senderId}</strong>: ${log.message}
+                                            </p>
+                                        </li>`;
+                                    chatLogs.append(newLog); // 새 로그 추가
+                                });
+                                scrollToBottom(); // 스크롤 아래로 이동
+                            } else {
+                                chatLogs.html("<li>채팅 로그가 없습니다.</li>");
+                            }
+                        },
+                        error: function (jqXHR) {
+                            console.error("채팅 로그 갱신 실패:", jqXHR.responseText);
+                        }
+                    });
+                }
+
+                // 메시지 전송
+                $("#chatForm").on("submit", function (e) {
+                    e.preventDefault(); // 기본 동작 방지
+                    const message = $("#messageInput").val(); // 메시지 입력값 가져오기
+
+                    $.ajax({
+                        url: `/chat/member/${username}`, // POST 요청에서 username 사용
+                        type: "POST",
+                        contentType: "application/x-www-form-urlencoded",
+                        data: { message },
+                        success: function (data) {
+                            if (data.success) {
+                                const newMessage = `
+                                    <li>
+                                        <p>
+                                            <strong>${data.sender}</strong>: ${data.message}
+                                        </p>
+                                    </li>`;
+                                chatLogs.append(newMessage); // 새로운 메시지 추가
+                                scrollToBottom(); // 스크롤 아래로 이동
+                                $("#messageInput").val(""); // 입력창 초기화
+                            }
+                        },
+                        error: function (jqXHR) {
+                            console.error("메시지 전송 실패:", jqXHR.responseText);
+                        }
+                    });
+                });
+
+                // 페이지 로드 시 채팅 로그 초기화
+                refreshChatLogs();
+
+                // 2초마다 채팅 로그 자동 새로고침
+                setInterval(refreshChatLogs, 2000);
+            });
+        </script>
+    </th:block>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <!-- 사용자 정보 표시 -->
+    <ul class="chatUl">
+        <li><strong>사용자 ID:</strong> <span id="username" th:text="${username}"></span></li>
+        <li><strong>이름:</strong> <span th:text="${member.name}"></span></li>
+        <li><strong>이메일:</strong> <span th:text="${member.email}"></span></li>
+        <li><strong>역할:</strong> <span th:text="${member.role}"></span></li>
+    </ul>
+
+    <div id="chat">
+        <h3>채팅 로그</h3>
+        <div id="chatLogs">
+            <ul id="chat_ul">
+                <li th:each="log : ${chatLogs}">
+                    <p>
+                        <strong th:text="${log.senderId}">Sender</strong>:
+                        <span th:text="${log.message}">Message</span>
+                    </p>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 메시지 입력 -->
+        <form id="chatForm" th:action="@{/chat/member/{userId}(userId=${username})}" method="post">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+            <div id="input-container">
+                <textarea id="messageInput" name="message" placeholder="메시지를 입력하세요" rows="3"></textarea>
+                <button type="submit" id="sendButton">전송</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+

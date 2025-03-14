@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<script src="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"></script>
+
+<div th:fragment="header">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: white; border-bottom: 0.5px solid #DCDCDC;">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarTogglerDemo03"
+              aria-controls="navbarTogglerDemo03"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="/" style="color: #00C7AE; font-weight: bold;">Menthe</a>
+
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+          <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+            <a class="nav-link" href="/admin/adminPage" style="color: black;">관리자 페이지</a>
+          </li>
+
+
+          <li class="nav-item" sec:authorize="isAnonymous()"> <!-- 로그인을 하지 않은 경우 -->
+            <a class="nav-link" href="/not/art" style="color: black;">Online Auction</a>
+          </li>
+
+          <li class="nav-item" sec:authorize="isAnonymous()"> <!-- 로그인을 하지 않은 경우 -->
+            <a class="nav-link" href="/rental" style="color: black;">Art Rental</a>
+          </li>
+
+          <li class="nav-item" sec:authorize="isAuthenticated()"> <!-- 로그인을 하지 않은 경우 -->
+            <a class="nav-link" href="/art" style="color: black;">Online Auction</a>
+          </li>
+
+          <li class="nav-item" sec:authorize="isAuthenticated()"> <!-- 로그인을 하지 않은 경우 -->
+            <a class="nav-link" href="/rental" style="color: black;">Art Rental</a>
+          </li>
+
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link" href="/cash-summary/balance" style="color: black;" id="myPage">My Page</a>
+            <ul class="submenu">
+              <li><a class="nav-link" href="/cash-summary/balance" style="color: black;">캐시조회</a></li>
+              <li><a class="nav-link" th:href="@{'/bid/success/' + ${member}}" style="color: black;">낙찰내역</a></li>
+              <li><a class="nav-link" th:href="@{'/bid/my-bids/' + ${member}}" style="color: black;">응찰내역</a></li>
+              <li><a class="nav-link" th:href="@{/myRent}" style="color: black;">렌탈중</a></li>
+              <li><a class="nav-link" th:href="@{'/myInfo/update/' + ${member}}" style="color: black;">내정보</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item-login" sec:authorize="isAnonymous()"> <!-- 로그인을 하지 않은 경우 -->
+            <a class="nav-link" href="/members/login" style="color: black;">login</a>
+          </li>
+          <li class="nav-item-logout" sec:authorize="isAuthenticated()">
+            <a class="nav-link" href="/members/logout" style="color: black;">logout</a>
+          </li>
+
+        </ul>
+
+
+
+
+      </div>
+    </div>
+  </nav>
+</div>
+
+</html>

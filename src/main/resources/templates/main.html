@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <link th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+
+<th:block layout:fragment="script">
+    <script class="cssdesk" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.0/moment.min.js"
+            type="text/javascript"></script>
+    <script th:inline="javascript">
+
+
+        //-------------- 채팅 연결 스크립트 ----------------------
+      $(document).ready(function () {
+          const csrfToken = $('meta[name="_csrf"]').attr('content');
+          const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+          const chatLogs = $('#chatLogs');
+          const chatForm = $('#chatForm');
+          const userId = $('div.user-info').data('user-id');
+
+          const pageSize = 20; // 한 번에 가져올 데이터 개수
+
+          // 초기 로딩 시 스크롤을 맨 아래로 이동
+          function scrollToBottom() {
+              chatLogs.scrollTop(chatLogs[0].scrollHeight);
+          }
+
+          // 채팅 로그 전체 새로고침
+          function refreshChatLogs() {
+              $.ajax({
+                  url: `/chat/popup/${userId}`,
+                  type: "GET",
+                  data: { size: pageSize },
+                  beforeSend: function (xhr) {
+                      xhr.setRequestHeader(csrfHeader, csrfToken);
+                  },
+                  success: function (data) {
+                      chatLogs.find('ul').empty(); // 기존 로그 초기화
+                      if (data.chatLogs && data.chatLogs.length > 0) {
+                          data.chatLogs.forEach(function (message) {
+                              const newMessage = `<li>${message.senderId}: ${message.message}</li>`;
+                              chatLogs.find('ul').append(newMessage); // 전체 로그 추가
+                          });
+                          scrollToBottom(); // 하단으로 스크롤 이동
+                      } else {
+                          chatLogs.find('ul').html('<li>채팅 로그가 없습니다.</li>'); // 로그 없음 표시
+                      }
+                  },
+                  error: function (jqXHR) {
+                      console.error("채팅 로그 새로고침 실패:", jqXHR.responseText);
+                  },
+              });
+          }
+
+          // 메시지 전송
+          chatForm.on('submit', function (e) {
+              e.preventDefault();
+              const formData = $(this).serialize();
+
+              $.ajax({
+                  url: `/chat/popup/${userId}`,
+                  type: "POST",
+                  contentType: "application/x-www-form-urlencoded",
+                  data: formData,
+                  beforeSend: function (xhr) {
+                      xhr.setRequestHeader(csrfHeader, csrfToken);
+                  },
+                  success: function (data) {
+                      refreshChatLogs(); // 메시지 전송 후 전체 새로고침
+                      chatForm[0].reset();
+                  },
+                  error: function (jqXHR) {
+                      console.error("메시지 전송 실패:", jqXHR.responseText);
+                  },
+              });
+          });
+
+          // 실시간 갱신: 3초마다 전체 로그 새로고침
+          setInterval(refreshChatLogs, 3000);
+
+          // 초기화
+          scrollToBottom();
+          refreshChatLogs(); // 페이지 로드 시 전체 로그 불러오기
+      });
+          //----------------------------------------------------
+
+
+
+          document.addEventListener('DOMContentLoaded', function () {
+              // memberRole 값을 hidden input에서 가져오기
+              var memberRole = document.getElementById('memberRole').value;
+
+              // 관리자만 기능을 사용할 수 있도록 제한
+              var calendarEl = document.getElementById('calendar');
+              var calendar = new FullCalendar.Calendar(calendarEl, {
+                  initialView: 'dayGridMonth',
+                  selectable: true,
+                  editable: true,
+                  nowIndicator: true,
+                  dayMaxEvents: true,
+                  locale: 'ko',
+                  headerToolbar: {
+                      left: 'prev,next today',
+                      center: 'title',
+                      right: 'dayGridMonth,timeGridDay,listWeek'
+                  },
+                  events: function (info, successCallback, failureCallback) {
+                      $.ajax({
+                          url: "/events/list",
+                          type: "GET",
+                          dataType: "JSON",
+                          beforeSend: function (xhr) {
+                              xhr.setRequestHeader("X-CSRF-TOKEN", document.querySelector('[name="_csrf"]').content);
+                          },
+                          success: function (data) {
+                              successCallback(data);
+                          },
+                          error: function (request, status, error) {
+                              alert("Error fetching events: " + error);
+                          }
+                      });
+                  },
+
+                  select: function (arg) {
+                      if (memberRole !== 'ADMIN') {
+                          return;
+                      }
+
+                      var title = prompt('일정을 입력하세요:');
+                      if (title) {
+                          var startTime = new Date(arg.start);
+                          var endTime = new Date(arg.end);
+                          startTime.setHours(startTime.getHours() + 9);
+                          endTime.setHours(endTime.getHours() + 9);
+
+                          var startKST = startTime.toISOString();
+                          var endKST = endTime.toISOString();
+
+                          $.ajax({
+                              url: "/admin/events/add",
+                              type: "POST",
+                              contentType: "application/json",
+                              data: JSON.stringify({
+                                  title: title,
+                                  start: startKST,
+                                  end: endKST,
+                              }),
+                              beforeSend: function (xhr) {
+                                  xhr.setRequestHeader("X-CSRF-TOKEN", document.querySelector('[name="_csrf"]').content);
+                              },
+                              success: function (data) {
+                                  console.log("Event added:", data);
+                                  alert("일정이 추가되었습니다.");
+                                  calendar.addEvent({
+                                      title: title,
+                                      start: arg.start,
+                                      end: arg.end,
+                                  });
+                                  location.reload();
+                              },
+                              error: function (request, status, error) {
+                                  alert("Event add failed: " + error);
+                              }
+                          });
+                      }
+                      calendar.unselect();
+                  },
+
+                  eventClick: function (arg) {
+                      if (memberRole !== 'ADMIN') {
+
+                          return;
+                      }
+
+                      if (confirm('일정을 삭제하시겠습니까?')) {
+                          $.ajax({
+                              url: "/admin/events/delete",
+                              type: "POST",
+                              contentType: "application/json",
+                              data: JSON.stringify({
+                                  id: arg.event.id
+                              }),
+                              beforeSend: function (xhr) {
+                                  xhr.setRequestHeader("X-CSRF-TOKEN", document.querySelector('[name="_csrf"]').content);
+                              },
+                              success: function (data) {
+                                  console.log("Event deleted:", data);
+                                  alert("일정이 삭제되었습니다.");
+                                  arg.event.remove();
+                                  location.reload();
+                              },
+                              error: function (request, status, error) {
+                                  alert("Event delete failed: " + error);
+                              }
+                          });
+                      }
+                  }
+              });
+
+              calendar.render();
+          });
+
+    </script>
+</th:block>
+
+<body>
+<div layout:fragment="content">
+
+
+
+    <!-- 영상 출력  -->
+    <div class="videoController">
+        <video autoplay muted loop playsinline class="topVideo">
+            <source th:src="@{/img/사이트소개영상.mp4}" type="video/mp4">
+            브라우저가 동영상을 지원하지 않습니다.
+        </video>
+    </div>
+
+    <div class="ImgController">
+        <img th:src="@{/img/사이트-설명-배너.jpg}" class="topImg" alt="설명 이미지">
+    </div>
+
+
+
+
+    <div class="middelImgController" sec:authorize="isAnonymous()">>
+        <a href="/not/art" target="_blank">
+        <img th:src="@{/img/디자인-중간-이미지-백색1.jpg}" class="middleImgOne" alt="중간 이미지1">
+        </a>
+    </div>
+
+    <div class="middelImgController" sec:authorize="isAuthenticated()">
+        <a href="/art" target="_blank">
+            <img th:src="@{/img/디자인-중간-이미지-백색1.jpg}" class="middleImgOne" alt="중간 이미지1">
+        </a>
+    </div>
+
+
+    <div class="middelImgController">
+        <a href="/rental" target="_blank">
+        <img th:src="@{/img/디자인-중간-이미지-백색2.jpg}" class="middleImgTwo" alt="중간 이미지2">
+        </a>
+    </div>
+
+
+
+
+
+    <div class="container">
+
+        <input type="hidden" id="memberRole" th:value="${memberRole}" />
+
+        <div class="table-container">
+            <div class="rank">작가별 낙찰총액 순위</div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>순위</th>
+                    <th>대표작</th>
+                    <th>작가명</th>
+                    <th>낙찰총액</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="artist, stat : ${artistRankings}">
+                    <td th:text="${stat.index + 1}"></td>
+                    <td><img th:src="${artist.imgUrl}" alt="대표작" style="width: 50px; height: 50px;"></td>
+                    <td th:text="${artist.name}"></td>
+                    <td th:text="${artist.totalSales}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+        <div class="container">
+        <div class="table-container">
+            <div class="rank">작가별 렌트횟수 순위</div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>순위</th>
+                    <th>대표작</th>
+                    <th>작가명</th>
+                    <th>렌트횟수</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="rental, stat : ${rentalRankings}">
+                    <td th:text="${stat.index + 1}"></td>
+                    <td><img th:src="${rental.imgUrl}" alt="대표작" style="width: 50px; height: 50px;"></td>
+                    <td th:text="${rental.name}"></td>
+                    <td th:text="${rental.totalCount}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <div class="middelImgController">
+        <img th:src="@{/img/사이트안심배너.jpg}" class="lowImg" alt="사이트 안심 배너">
+    </div>
+
+    <div id='calendar'></div>
+    <input type="hidden" id="userRole" th:value="${role}" />
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+</div>
+</body>
+</html>

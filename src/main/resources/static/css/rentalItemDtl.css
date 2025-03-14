@@ -1,0 +1,236 @@
+  .mgb-15{
+        margin-bottom:15px;
+    }
+    .mgt-30{
+        margin-top:30px;
+    }
+    .mgt-50{
+        margin-top:50px;
+    }
+    .repImgDiv{
+        margin-right:15px;
+        height:auto;
+        width:50%;
+    }
+
+    .repImg{
+        width:100%;
+        height:400px;
+    }
+    .wd50{
+        height:auto;
+        width:50%;
+    }
+
+
+        /* 팝업 관련 스타일 */
+        #rentPopup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            z-index: 1001;
+            font-family: 'Pretendard', 'Gmarket Sans', sans-serif;
+        }
+
+        #rentPopup h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #212121;
+        }
+
+        #rentPopup label {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #333333;
+            display: inline-block;
+        }
+
+        #rentPopup .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #212121;
+            display: inline-block;
+        }
+
+        #rentPopup button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        #rentPopup .btn-primary {
+            background-color: #212121;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        #rentPopup .btn-primary:hover {
+            background-color: #333333;
+        }
+
+        #rentPopup .btn-secondary {
+            background-color: #f4f4f4;
+            color: #212121;
+            font-weight: bold;
+        }
+
+        #rentPopup .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+        }
+        /* 팝업 관련 스타일 */
+
+
+   /* Flexbox 레이아웃 적용 예시 */
+   .d-flex {
+       display: flex;
+   }
+
+
+  /* 왼쪽 섹션: 이미지 */
+  .left-section {
+    flex: 1; /* 이미지가 전체 레이아웃에서 일정 비율 차지 */
+    text-align: center;
+  }
+
+  .left-section img {
+    width: 100%; /* 이미지가 섹션을 꽉 채움 */
+    object-fit: contain;
+    // border: 0px solid #ddd; /* 테두리 선*/
+    background-color: #f9f9f9;
+    border-radius: 0px; /* 모서리 둥글게 */
+  }
+
+  /* 오른쪽 섹션: 정보 */
+  .right-section {
+    flex: 1; /* 정보가 나머지 공간 차지 */
+    padding: 0px 0px 0px 20px;
+    min-width: 30%; /* 최소 너비를 화면의 30%로 설정 */
+    max-width: 60%; /* 최대 너비를 화면의 60%로 설정 */
+    width: 100%; /* 기본 너비 */
+  }
+
+  .text-right mgt-50 p{
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+  font-color: #cccccc;
+  }
+
+  .price{
+    display: flex; /* 한 줄에 나란히 나오게 설정 */
+    flex - direction: row;
+    flex-direction: row; /* 방향 설정 (row는 기본값) */
+    align-items: center; /* 세로 방향(상하) 중앙 정렬 */
+    width: 300px;
+  }
+
+  .h4 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .price p{
+    margin : 5px;
+  }
+
+  .price h6{
+      width : 90px;
+      font-family:  'Noto Sans KR', sans-serif;
+      font-weight: bold;
+      display: inline-block; /* p태그도 한 줄에 나오게 설정 */
+      font-family: 'Montserrat', sans-serif
+  }
+
+  .badge {
+      display: block;
+      max-height : 100px
+      margin-bottom: 4px;
+      font-size: 15px;
+      padding: 10px;
+      text-align: left;
+      background: linear-gradient(to bottom, #212121, #212121);
+      border-radius: 5px; /* 라운드 효과 제거 */
+  }
+
+
+  /* 응찰 금액 선택 섹션 */
+  #openRentPopup {
+      font-family: 'Pretendard', sans-serif;
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: block;
+      color: white;
+      width : 120px;
+      height : 50px;
+      background: linear-gradient(to bottom, #212121, #212121);
+  }
+  a {
+    text-decoration: none;
+    color : white;
+  }
+
+  .btn-light {
+    margin-top : 15px;
+    background: linear-gradient(to bottom, #212121, #212121);
+    border: none;
+    color: white;
+  }
+
+
+  .btn-light:hover {
+    background-color: #242424;
+  }
+
+
+
+/* 상세설명 Css */
+.mgt-30 {
+   margin-top : 30px;
+   margin-bottom : 30px;
+   box-shadow : 0 12px 10px -7px rgba(0, 0, 0, 0.1);
+}
+
+.writer{
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+  padding-top : 5px;
+  padding-bottom : 10px;
+}
+
+
+.writerDesc h5, p{
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+}
+
+
+.lead {
+  color: #6D6D6D;
+  font-size: 15px;
+  white-space: pre-wrap; /* 줄바꿈(\n)과 공백 유지 */
+}
+
+

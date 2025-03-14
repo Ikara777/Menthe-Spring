@@ -1,0 +1,206 @@
+html{
+    position: relative;
+    min-height: 100%;
+    margin: 0;
+}
+body{
+    min-height: 100%;
+}
+
+.content{
+    margin-bottom: 180px;
+    margin-top: 50px;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+
+/* **********header*********** */
+
+
+/* 전체 글꼴 설정 */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-top: 80px; /* 헤더 높이만큼 여백 추가 */
+}
+
+/* 헤더 고정 */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #DCDCDC;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 미세한 그림자 효과 */
+    transition: box-shadow 0.3s ease; /* 부드러운 전환 효과 추가 */
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+    padding: 10px 20px;
+    justify-content: space-between; /* 왼쪽과 오른쪽으로 메뉴 분리 */
+}
+
+/* menthe 로고 위치 조정 (약간 오른쪽으로 이동) */
+.navbar-brand {
+    color: #00C7AE;
+    font-weight: bold;
+    margin-left: 150px; /* 로고를 약간 오른쪽으로 이동 */
+}
+
+/* 네비게이션 링크 폰트 크기 및 스타일 조정 */
+.nav-link {
+    color: black;
+    font-weight: 600; /* 글씨 두께를 조금 더 강조 */
+    font-size: 1rem; /* 텍스트 크기를 조정 */
+    letter-spacing: 0.5px; /* 자간 추가 */
+    transition: color 0.3s ease, transform 0.3s ease; /* 부드러운 효과 추가 */
+}
+
+/* 네비게이션 링크 호버 효과 */
+.nav-link:hover {
+    color: #00C7AE;
+    transform: translateY(-2px); /* 마우스 올렸을 때 약간 위로 이동 */
+}
+
+/* 메뉴 항목을 중앙에 정렬 */
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    margin-left: 150px; /* 로고와 로그인/로그아웃 버튼을 고려해 메뉴를 중앙에 정렬 */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center; /* 메뉴 항목들을 중앙 정렬 */
+}
+
+/* 일반 메뉴 항목 */
+.navbar-nav .nav-item {
+    margin-left: 30px; /* 항목 간 간격을 더 넓게 조정 */
+    position: relative; /* 서브메뉴 기준 위치 */
+}
+
+/* 로그인/로그아웃 버튼을 오른쪽 끝으로 이동 */
+.nav-item-logout {
+    margin-left: 400px; /* 왼쪽 항목들을 밀어 오른쪽으로 정렬 */
+    font-size: 0.9rem;
+    font-weight: normal; /* 글씨를 두껍게 하지 않음 */
+    text-align: right;
+}
+
+/* 서브 메뉴 스타일 개선 */
+.submenu {
+    display: none; /* 기본적으로 숨김 */
+    list-style-type: none;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 110%; /* My Page 항목 아래 위치 */
+    left: 0;
+    background-color: white;
+    width: 200px; /* 서브 메뉴 너비 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 더 부드러운 그림자 */
+    border-radius: 8px; /* 둥근 모서리 추가 */
+    z-index: 10;
+    padding: 12px 0;
+}
+
+/* 서브 메뉴 항목 스타일 */
+.submenu li {
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+}
+
+/* 서브 메뉴 항목 호버 */
+.submenu li:hover {
+    background-color: #f9f9f9;
+    font-weight: bold;
+}
+
+/* 마지막 항목에 구분선 없애기 */
+.submenu li:last-child {
+    border-bottom: none;
+}
+
+/* My Page 항목에 hover 시 서브 메뉴 표시 */
+.nav-item:hover .submenu {
+    display: flex;
+}
+
+.nav-item-login {
+    margin-left: 650px; /* 왼쪽 항목들을 밀어 오른쪽으로 정렬 */
+    font-size: 0.9rem;
+    font-weight: normal; /* 글씨를 두껍게 하지 않음 */
+    text-align: right;
+}
+
+
+
+
+/***************** footer **************/
+  .footer {
+  position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    margin-top: 20px;
+    background-color: #FBFCFD;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+    text-align: center; /* 모든 텍스트를 가운데 정렬 */
+    z-index: -1000;
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+
+  }
+  .footer a {
+    color: #007bff;
+    text-decoration: none;
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+
+  }
+  .footer a:hover {
+    text-decoration: underline;
+  }
+  .copyright {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666;
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+
+  }
+
+    .footer {
+      background-color: #FBFCFD;
+      padding: 20px;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.6;
+      text-align: center; /* 모든 텍스트를 가운데 정렬 */
+    }
+    .footer a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    .copyright {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #666;
+    }
+
+  .footer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+  }

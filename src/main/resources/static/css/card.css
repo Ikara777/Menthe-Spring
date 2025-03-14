@@ -1,0 +1,56 @@
+/* 전체 카드 컨테이너 스타일 */
+.container .row .card {
+    border: 1px solid #ddd; /* 카드 테두리 */
+    border-radius: 10px; /* 둥근 모서리 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 애니메이션 */
+}
+
+.container .row .card:hover {
+    transform: scale(1.05); /* 호버 시 확대 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 강화 */
+}
+
+/* 카드 이미지 */
+.card-img-top {
+    object-fit: cover; /* 이미지 비율 유지 */
+    border-bottom: 1px solid #ddd; /* 이미지 아래 테두리 */
+}
+
+/* 카드 본문 스타일 */
+.card-body {
+    text-align: center; /* 텍스트 중앙 정렬 */
+    padding: 10px;
+}
+
+/* 제목 (작가 이름) */
+.card-body .card-title {
+    font-size: 1.2rem; /* 제목 폰트 크기 */
+    font-weight: bold; /* 제목 폰트 두께 */
+    color: #343a40; /* 제목 색상 */
+}
+
+/* 작품 이름 */
+.card-body .card-text {
+    font-size: 1rem;
+    color: #6c757d; /* 텍스트 색상 */
+}
+
+/* 시작 가격 */
+.card-body .text-danger {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #dc3545; /* 빨간색 */
+}
+
+.margin {
+    margin-bottom: 30px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.center {
+    text-align: center;
+}

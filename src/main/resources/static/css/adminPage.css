@@ -1,0 +1,68 @@
+/* 전체 컨테이너 */
+      .button-container {
+          display: flex;
+          justify-content: center; /* 버튼들을 가운대로 배치 */
+          flex-wrap: wrap; /* 화면에 맞게 줄바꿈 */
+          margin-top: 50px; /* 마진 줄임 */
+          gap: 12px; /* 항목 간의 간격 줄임 */
+      }
+
+      .button-container div {
+          text-align: center; /* 아이템 중앙 정렬 */
+          margin: 0; /* 각 버튼 간격을 없앱니다 */
+          flex-basis: 20%; /* 각 항목의 크기를 더 작은 비율로 설정 */
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+          padding: 8px; /* 내부 여백 줄임 */
+          border-radius: 8px; /* 둥근 테두리 */
+          transition: box-shadow 0.3s ease-in-out; /* 호버 시 그림자 애니메이션 */
+          width: 160px; /* 버튼의 크기 줄임 */
+          height: 180px; /* 버튼의 크기 줄임 */
+
+          border: 2px solid #ddd;
+          background-color : #f4f4f4;
+      }
+
+      /* 버튼 스타일 (버튼을 보이지 않게 설정) */
+      .button-container button {
+          padding: 0; /* 버튼 내부 여백 제거 */
+          font-size: 0; /* 텍스트 제거 */
+          background-color: transparent; /* 배경을 투명하게 설정 */
+          border: none; /* 버튼 테두리 제거 */
+          width: 100%; /* 버튼 크기 100%로 설정 */
+          height: 100%; /* 버튼 크기 100%로 설정 */
+          cursor: pointer;
+      }
+
+      .button-container button:hover {
+          background-color: transparent; /* 호버 시 배경색 변화 없음 */
+      }
+
+      /* 이미지 아이콘 크기 */
+      .button-icon {
+          width: 100%; /* 이미지를 버튼 크기에 맞게 확장 */
+          height: auto; /* 이미지의 비율을 유지 */
+          vertical-align: middle; /* 텍스트와 이미지 정렬 */
+          margin-top : -30px;
+          padding : 10px;
+      }
+
+      /* 타이틀 스타일 */
+      hr {
+      margin-bottom : -5px;
+      }
+
+      h1 {
+          font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+          font-weight: bold;
+          font-color: #cccccc;
+          font-size: 14px; /* 제목 크기 줄임 */
+          margin-top: 10px;
+          margin-bottom: 5px;
+          font-weight: 600; /* 글씨 두껍게 */
+
+      }
+
+      /* div 호버 시 그림자 변화 */
+      .button-container div:hover {
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 강조 */
+      }

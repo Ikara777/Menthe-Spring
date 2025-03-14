@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+  <link th:href="@{/css/myPage.css}" rel="stylesheet">
+
+  <th:block layout:fragment="script">
+    <script th:inline="javascript">
+
+
+
+        $(document).ready(function () {
+          let isLoading = false; // 데이터 로딩 중 여부
+          let currentPage = 1; // 현재 페이지 번호
+          const pageSize = 5; // 한 번에 가져올 데이터 개수
+          let hasMoreData = true; // 추가 데이터 여부
+
+          // 스크롤 이벤트
+          $('#scroll').on('scroll', function () {
+            // 스크롤이 맨 아래에 도달했을 때
+            if ($(this).scrollTop() === 0 && !isLoading && hasMoreData) {
+              currentPage += 1;  // 페이지 번호 증가
+              loadChatLogs(currentPage); // 과거 메시지 불러오기
+            }
+          });
+
+          // 데이터를 로드하는 함수
+          function loadChatLogs(page) {
+            isLoading = true;
+            $('#loading').show(); // 로딩 표시
+
+            // Ajax 요청을 통해 데이터를 불러옵니다
+            $.ajax({
+              url: '/myRent/load-more', // 서버 요청 URL
+              method: 'GET',
+              data: {
+                page: page,
+                size: pageSize
+              },
+              success: function(response) {
+                if (response && response.rentItems && response.rentItems.length > 0) {
+                  response.rentItems.forEach(function(rent) {
+                    let row = `<tr>
+                      <td><img src="${rent.rentalItem.imgUrl}" style="width: 100px; height: 100px;"></td>
+                      <td>${rent.rentalItem.artName}</td>
+                      <td>${rent.rentalItem.artistName}</td>
+                      <td>${rent.rentTime}</td>
+                      <td>${rent.rentAmount}</td>
+                      <td><button>환불</button></td>
+                    </tr>`;
+                    $('#scroll').append(row);
+                  });
+                  isLoading = false;  // 로딩 끝
+                  $('#loading').hide(); // 로딩 숨기기
+                } else {
+                  hasMoreData = false; // 더 이상 데이터 없음
+                }
+              }
+            });
+          }
+        });
+    </script>
+  </th:block>
+
+</head>
+
+<body>
+<div layout:fragment="content" class="content">
+  <div class="container">
+    <ul class="subMenu">
+      <li><button type="button" class="tab"><a th:href="@{'/myInfo/update/' + ${memberId}}"> 내정보 </a></button></li>
+      <li><button type="button" class="tab active"><a th:href="@{/myRent}"> 렌탈중 </a></button></li>
+      <li><button type="button" class="tab"> <a th:href="@{'/bid/my-bids/' + ${memberId}}"> 응찰내역 </a></button></li>
+      <li><button type="button" class="tab"><a th:href="@{'/bid/success/' + ${memberId}}"> 낙찰내역 </a></button></li>
+      <li><button type="button" class="tab"><a href="/cash-summary/balance"> 캐시조회 </a></button></li>
+    </ul>
+    <input type="hidden" th:field="*{memberId}">
+    <h3>렌탈중</h3>
+    <table id="scroll">
+      <thead>
+      <tr>
+        <th>작품</th>
+        <th>작품명</th>
+        <th>작가명</th>
+        <th>응찰 시간</th>
+        <th>반납일</th>
+        <th>가격</th>
+        <th style="width: 150px; text-align: center;">환불</th> <!-- 환불 칸 넓게 -->
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="rent : ${rentItems}">
+        <td>
+
+          <!-- 기본 이미지 URL이 있으면 그대로 사용 -->
+          <img th:if="${not #strings.isEmpty(rent.rentalItem.imgUrl)}"
+               th:src="${rent.rentalItem.imgUrl}"
+               style="width: 100px; height: 100px;">
+
+          <!-- 기본 이미지가 없으면 itemImagesMap에서 첫 번째 이미지 사용 -->
+          <img th:unless="${not #strings.isEmpty(rent.rentalItem.imgUrl)}"
+               th:src="${itemImagesMap[rent.rentalItem.id]?.get(0)?.imgUrl ?: '/default/image/path.jpg'}"
+               style="width: 100px; height: 100px;">
+
+
+        </td>
+        <td th:text="${rent.rentalItem.artName}">작품명</td>
+        <td th:text="${rent.rentalItem.artistName}">작가명</td>
+        <td th:text="${#temporals.format(rent.rentTime, 'yyyy-MM-dd HH:mm')}">응찰 시간</td>
+        <td th:text="${#temporals.format(rent.rentTime.plusMonths(3), 'yyyy-MM-dd')}">반납일</td>
+        <td th:text="${rent.rentAmount}">가격</td>
+        <td>
+          <div th:if="${rent.status == T(com.shop.constant.PaymentStatus).PAID}">
+            <div th:if="${#temporals.format(rent.rentTime.plusWeeks(1), 'yyyy-MM-dd') >= #temporals.format(T(java.time.LocalDateTime).now(), 'yyyy-MM-dd')}">
+              <form th:action="@{/myRent/refund/{rentId}(rentId=${rent.id})}" method="post">
+                <button type="submit" class="btn btn-danger btn-sm">환불</button>
+              </form>
+            </div>
+            <div th:unless="${#temporals.format(rent.rentTime.plusWeeks(1), 'yyyy-MM-dd') >= #temporals.format(T(java.time.LocalDateTime).now(), 'yyyy-MM-dd')}">
+              <button type="button" class="btn btn-secondary btn-sm" disabled>환불 기간 종료</button>
+            </div>
+          </div>
+          <div th:unless="${rent.status == T(com.shop.constant.PaymentStatus).PAID}">
+            <form>
+              <button type="submit" class="btn btn-success btn-sm">환불 완료</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+</body>
+</html>

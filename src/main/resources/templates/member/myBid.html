@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+  <link th:href="@{/css/myPage.css}" rel="stylesheet">
+
+  <th:block layout:fragment="script">
+    <script th:inline="javascript">
+
+
+      $(document).ready(function () {
+        let isLoading = false; // 데이터 로딩 중 여부
+        let currentPage = 1; // 현재 페이지 번호
+        const pageSize = 5; // 한 번에 가져올 데이터 개수
+        let hasMoreData = true; // 추가 데이터 여부
+
+        // 스크롤 이벤트
+        $('#scroll').on('scroll', function () {
+          // 스크롤이 맨 아래에 도달했을 때
+          if ($(this).scrollTop() === 0 && !isLoading && hasMoreData) {
+            currentPage += 1;  // 페이지 번호 증가
+            loadChatLogs(currentPage); // 과거 메시지 불러오기
+          }
+        });
+
+        // 데이터를 로드하는 함수
+        function loadChatLogs(page) {
+          isLoading = true;
+          $('#loading').show(); // 로딩 표시
+
+          // Ajax 요청을 통해 데이터를 불러옵니다
+          $.ajax({
+            url: '/bid/my-bids/load-more', // 서버 요청 URL
+            method: 'GET',
+            data: {
+              page: page,
+              size: pageSize
+            },
+            success: function(response) {
+              if (response && response.rentItems && response.rentItems.length > 0) {
+                response.rentItems.forEach(function(rent) {
+                  let row = `<tr>
+                    <td><img th:src="${bid.imgUrl}" style="width: 200px; height: 200px;"></td> <!-- 이미지 URL -->
+                    <td th:text="${bid.artName}">작품명</td> <!-- 작품명 -->
+                    <td th:text="${bid.artistName}">작가명</td> <!-- 작가명 -->
+                    <td th:text="${bid.maxAmount}">응찰 금액</td> <!-- 본인 최고 응찰가 -->
+                    <td th:text="${#temporals.format(bid.bidTime, 'yyyy-MM-dd HH:mm')}">응찰 시간</td> <!-- 응찰 시간 -->
+                    <td th:text="${bid.highestBidAmount}">최고가</td> <!-- 최고 응찰가 -->
+                  </tr>`;
+                  $('#scroll').append(row);
+                });
+                isLoading = false;  // 로딩 끝
+                $('#loading').hide(); // 로딩 숨기기
+              } else {
+                hasMoreData = false; // 더 이상 데이터 없음
+              }
+            }
+          });
+        }
+      });
+    </script>
+  </th:block>
+</head>
+
+<body>
+
+
+<div layout:fragment="content" class="content">
+  <div class="container">
+    <ul class="subMenu">
+      <li><button type="button" class="tab"><a th:href="@{'/myInfo/update/' + ${memberId}}"> 내정보 </a></button></li>
+      <li><button type="button" class="tab"><a th:href="@{/myRent}"> 렌탈중 </a></button></li>
+      <li><button type="button" class="tab active"> <a th:href="@{'/bid/my-bids/' + ${memberId}}"> 응찰내역 </a></button></li>
+      <li><button type="button" class="tab"><a th:href="@{'/bid/success/' + ${memberId}}"> 낙찰내역 </a></button></li>
+      <li><button type="button" class="tab"><a href="/cash-summary/balance"> 캐시조회 </a></button></li>
+    </ul>
+
+
+    <h3>응찰 내역</h3>
+
+    <table id="scroll">
+      <thead>
+      <tr>
+        <th>경매 물품</th>
+        <th>작품명</th>
+        <th>작가명</th>
+        <th>내 응찰 금액</th>
+        <th>응찰 시간</th>
+        <th>현재 최고가</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="bid : ${bids}">
+        <td><img th:src="${bid.imgUrl}" style="width: 100px; height: 100px;"></td> <!-- 이미지 URL -->
+        <td th:text="${bid.artName}">작품명</td> <!-- 작품명 -->
+        <td th:text="${bid.artistName}">작가명</td> <!-- 작가명 -->
+        <td th:text="${bid.maxAmount}">응찰 금액</td> <!-- 본인 최고 응찰가 -->
+        <td th:text="${#temporals.format(bid.bidTime, 'yyyy-MM-dd HH:mm')}">응찰 시간</td> <!-- 응찰 시간 -->
+        <td th:text="${bid.highestBidAmount}">최고가</td> <!-- 최고 응찰가 -->
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

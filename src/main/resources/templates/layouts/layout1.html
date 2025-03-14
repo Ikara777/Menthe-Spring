@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}">
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <!-- CSS only -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+  <link th:href="@{/css/layout1.css}" rel="stylesheet">
+  <link th:href="@{/css/chatPopup.css}" rel="stylesheet">
+  <link th:href="@{/css/chatButton.css}" rel="stylesheet">
+
+
+  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
+
+  <!-- JS, Popper.js and Jquery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
+  <script src="https://apis.google.com/js/api.js"></script>
+
+
+
+  <th:block layout:fragment="script">
+
+    <script>
+      $(document).ready(function () {
+          const csrfToken = $('meta[name="_csrf"]').attr('content');
+          const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+          const chatLogs = $('#chatLogs');
+          const chatForm = $('#chatForm');
+          const userId = $('div.user-info').data('user-id');
+
+          const pageSize = 20; // 한 번에 가져올 데이터 개수
+
+          // 초기 로딩 시 스크롤을 맨 아래로 이동
+          function scrollToBottom() {
+              chatLogs.scrollTop(chatLogs[0].scrollHeight);
+          }
+
+          // ajax -> 서버랑 통신하는 함수 -> 공통화
+          function ajaxCall(url, type, data, beforeSend, success, error){
+
+
+          }
+
+          // 경매 ajax
+
+
+          // 채팅 로그 전체 새로고침
+          function refreshChatLogs(param1, param2, param3) {
+              $.ajax({
+                  url: `/chat/popup/${userId}`,
+                  type: "GET",
+                  data: { size: pageSize },
+                  beforeSend: function (xhr) {
+                      xhr.setRequestHeader(csrfHeader, csrfToken);
+                  },
+                  success: function (data) {
+                      chatLogs.find('ul').empty(); // 기존 로그 초기화
+                      if (data.chatLogs && data.chatLogs.length > 0) {
+                          data.chatLogs.forEach(function (message) {
+                              const newMessage = `<li>${message.senderId}: ${message.message}</li>`;
+                              chatLogs.find('ul').append(newMessage); // 전체 로그 추가
+                          });
+                          scrollToBottom(); // 하단으로 스크롤 이동
+                      } else {
+                          chatLogs.find('ul').html('<li>채팅 로그가 없습니다.</li>'); // 로그 없음 표시
+                      }
+                  },
+                  error: function (jqXHR) {
+                      console.error("채팅 로그 새로고침 실패:", jqXHR.responseText);
+                  },
+              });
+          }
+
+          // 메시지 전송
+          chatForm.on('submit', function (e) {
+              e.preventDefault();
+              const formData = $(this).serialize();
+
+              $.ajax({
+                  url: `/chat/popup/${userId}`,
+                  type: "POST",
+                  contentType: "application/x-www-form-urlencoded",
+                  data: formData,
+                  beforeSend: function (xhr) {
+                      xhr.setRequestHeader(csrfHeader, csrfToken);
+                  },
+                  success: function (data) {
+                      refreshChatLogs(); // 메시지 전송 후 전체 새로고침
+                      chatForm[0].reset();
+                  },
+                  error: function (jqXHR) {
+                      console.error("메시지 전송 실패:", jqXHR.responseText);
+                  },
+              });
+          });
+
+          // 실시간 갱신: 3초마다 전체 로그 새로고침
+          setInterval(refreshChatLogs, 3000);
+
+          // 초기화
+          scrollToBottom();
+          refreshChatLogs(); // 페이지 로드 시 전체 로그 불러오기
+      });
+    </script>
+
+  </th:block>
+
+
+  <th:block layout:fragment="css"></th:block>
+
+
+</head>
+
+<body>
+
+  <!-- 상담 버튼 -->
+  <div class="myBid" id="chat-container" th:if="${currentUser != null}">
+    <button type="button" class="invisible-button" data-bs-toggle="modal" data-bs-target="#chatModal">
+      <img th:src="@{/img/chat.png}" class="button-icon" alt="채팅 아이콘">
+    </button>
+  </div>
+
+
+<!-- 모달 -->
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="chatModalLabel">상담창</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+
+      <div class="modal-body">
+
+        <!-- 사용자 정보 -->
+        <div class="user-info" th:if="${currentUser != null}" th:attr="data-user-id=${currentUser.userId}">
+          <p th:text="'로그인된 사용자: ' + ${currentUser.name} + ' (' + ${currentUser.userId} + ')'"></p>
+        </div>
+
+
+        <!-- 채팅 로그 -->
+        <div id="chat">
+          <h3>채팅 로그</h3>
+          <div id="chatLogs" style="height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+            <ul>
+              <!-- AJAX로 추가될 데이터 -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- 채팅 입력 폼 -->
+        <form id="chatForm">
+          <textarea class="form-control" name="message" placeholder="메시지를 입력하세요" required></textarea>
+          <button type="submit" class="btn btn-primary mt-2">전송</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div th:replace="~{fragments/header::header}"></div>
+
+
+
+<div layout:fragment="content" class="content">
+
+</div>
+
+
+
+<div th:replace="~{fragments/footer::footer}"></div>
+</body>
+
+</html>

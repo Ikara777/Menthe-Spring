@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+  <link th:href="@{/css/myInfo.css}" rel="stylesheet">
+
+</head>
+
+<th:block layout:fragment="script">
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script th:src="@{/js/kakaoAddress.js}"></script>
+
+  <script th:inline="javascript">
+
+
+    //-------------- 채팅 연결 차단 스크립트 ----------------------
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const currentUrl = window.location.pathname; // 현재 URL 경로
+
+      // 제외할 경로 패턴
+      const excludedPatterns = [
+        "/myRent",
+        "/api/refund",
+        "/cash-summary/balance",
+        "/myInfo/update/",
+        "/bid/my-bids/{memberId}",
+        "/bid/success/",
+        "/cash-summary/balance"
+      ];
+
+      // 경로가 제외 목록의 패턴으로 시작하면 숨기기
+      if (excludedPatterns.some(pattern => currentUrl.startsWith(pattern))) {
+        const chatContainer = document.getElementById("chat-container");
+        if (chatContainer) {
+          chatContainer.style.display = "none"; // 숨기기
+        }
+      }
+    });
+
+    //----------------------------------------------------
+
+
+
+
+
+$(document).ready(function(){
+    // 수정 버튼 클릭 시 실행
+    $("button[type='submit']").click(function(e){
+        var isActive = $(this).hasClass("active");
+
+        if(isActive) {
+            e.preventDefault();  // 기본 동작(폼 제출)을 막습니다.
+
+            // 폼 필드를 수정 가능하게 활성화
+            $("input[type='text'], input[type='email'], input[type='password']").prop('readonly', false);
+
+            // 수정 버튼의 스타일 변경
+            $(this).removeClass("active").text("수정완료"); // 버튼의 텍스트를 "수정완료"로 변경
+
+            // 수정완료 버튼 클릭 시 폼을 제출하도록 설정
+            $(this).off("click").click(function() {
+                $("form").submit(); // 폼을 제출하여 서버로 데이터를 전송
+            });
+
+        } else {
+            // 비밀번호 수정 칸이 비어있을 경우 경고 메시지 띄우기
+            var password = $("input[name='password']").val();
+            if (!password) {
+                alert("비밀번호 수정 칸을 입력해주세요.");
+                e.preventDefault(); // 폼 제출 막기
+                return;
+            }
+
+            // 수정 완료 후 alert 메시지
+            alert("수정 완료되었습니다.");
+
+            // 수정완료 버튼 클릭 후 폼을 제출
+            $("form").submit();  // 폼을 제출하여 서버로 데이터를 전송
+        }
+    });
+});
+
+
+
+function sample6_execDaumPostcode() {
+         new daum.Postcode({
+             oncomplete: function(data) {
+                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                 // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                 // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                 var addr = ''; // 주소 변수
+                 var extraAddr = ''; // 참고항목 변수
+
+                 //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                 if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                     addr = data.roadAddress;
+                 } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                     addr = data.jibunAddress;
+                 }
+
+                 // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                 if(data.userSelectedType === 'R'){
+                     // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                     // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                     if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                         extraAddr += data.bname;
+                     }
+                     // 건물명이 있고, 공동주택일 경우 추가한다.
+                     if(data.buildingName !== '' && data.apartment === 'Y'){
+                         extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                     }
+                     // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                     if(extraAddr !== ''){
+                         extraAddr = ' (' + extraAddr + ')';
+                     }
+                     // 조합된 참고항목을 해당 필드에 넣는다.
+                     document.getElementById("sample6_extraAddress").value = extraAddr;
+
+                 } else {
+                     document.getElementById("sample6_extraAddress").value = '';
+                 }
+
+                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                 document.getElementById('sample6_postcode').value = data.zonecode;
+                 document.getElementById("sample6_address").value = addr;
+                 // 커서를 상세주소 필드로 이동한다.
+                 document.getElementById("sample6_detailAddress").focus();
+             }
+         }).open();
+     }
+
+
+
+  </script>
+</th:block>
+
+<body>
+<div layout:fragment="content" class="content">
+  <form role="form" method="post" enctype="multipart/form-data" th:object="${memberFormDto}">
+    <input type="hidden" th:field="*{id}">
+    <div class="container">
+      <ul class="subMenu">
+        <li><button type="button" class="tab active"><a th:href="@{'/myInfo/update/' + ${memberId}}"> 내정보 </a></button></li>
+        <li><button type="button" class="tab"><a th:href="@{/myRent}"> 렌탈중 </a></button></li>
+        <li><button type="button" class="tab"> <a th:href="@{'/bid/my-bids/' + ${memberId}}"> 응찰내역 </a></button></li>
+        <li><button type="button" class="tab"><a th:href="@{'/bid/success/' + ${memberId}}"> 낙찰내역 </a></button></li>
+        <li><button type="button" class="tab"><a href="/cash-summary/balance"> 캐시조회 </a></button></li>
+      </ul>
+
+      <table>
+        <tr>
+          <th colspan="2">내정보 조회</th>
+        </tr>
+
+        <tr>
+          <td>이름</td>
+          <td><input type="text" th:field="*{name}" readonly/></td>
+        </tr>
+
+        <tr>
+          <td>아이디</td>
+          <td><input type="text" th:field="*{userId}" readonly/></td>
+        </tr>
+
+        <tr>
+          <td>비밀번호 수정</td>
+          <td>
+            <input type="password" name="password" placeholder="비밀번호 수정">
+          </td>
+        </tr>
+
+        <tr>
+          <td>이메일</td>
+          <td>
+            <input type="email" th:field="*{email}">
+          </td>
+        </tr>
+
+        <tr>
+          <td><label th:for="address">주소<span class="star"></span></label></td>
+          <td>
+            <div class="infoList">
+              <div class="addressList address01">
+                <input type="text" id="sample6_postcode" placeholder="우편번호" th:field="*{postcode}"
+                       readonly>
+                <input type="button" onclick="sample6_execDaumPostcode()" value="검색">
+              </div>
+              <div class="addressList address02"><input type="text" id="sample6_address" placeholder="주소"
+                                                        th:field="*{address}" readonly></div>
+              <div class="addressList address03">
+                <input type="text" id="sample6_detailAddress" placeholder="상세주소">
+                <input type="text" id="sample6_extraAddress" placeholder="">
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>전화번호</td>
+          <td>
+            <input type="text" th:field="*{tel}">
+          </td>
+        </tr>
+      </table>
+
+      <div th:unless="${#strings.isEmpty(memberFormDto.id)}" style="text-align : center">
+        <button th:formaction="@{'/myInfo/update/' + ${memberId}}" type="submit" class="button"
+                style="background-color: #09E0D0">수정</button>
+      </div>
+    </div>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+  </form>
+</div>
+</body>
+</html>

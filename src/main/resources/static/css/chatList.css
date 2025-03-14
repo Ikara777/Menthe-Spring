@@ -1,0 +1,74 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  /* 컨테이너 스타일 */
+  .container {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 20px;
+    padding: 40px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  /* 제목 스타일 */
+  h1 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    color: #333;
+    font-weight: bold;
+  }
+
+  /* 버튼 컨테이너 스타일 */
+  .button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  /* 개별 버튼 스타일 */
+  .chat-button {
+    display: inline-block;
+    padding: 15px 35px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #00C7AE;
+    border: none;
+    border-radius: 50px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+    font-weight: 600;
+  }
+
+  /* 버튼 hover 효과 */
+  .chat-button:hover {
+    background-color: #02ad98;
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 123, 255, 0.5);
+  }
+
+  /* 버튼 클릭 효과 */
+  .chat-button:active {
+    background-color: #02ad98;
+    transform: translateY(2px);
+  }
+
+  /* 채팅창 안보이게 하는 명령 */
+  .myBid {
+       display: none;
+  }

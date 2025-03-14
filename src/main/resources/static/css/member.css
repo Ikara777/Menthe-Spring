@@ -1,0 +1,95 @@
+/* 기본 폼 스타일 */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .form-control:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    .btn {
+      background-color: #00C7AE;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      margin-top: 5px;
+    }
+
+    .btn:hover {
+      background-color: #10a391;
+    }
+
+    .fieldError {
+      color: #bd2130;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .addressList input {
+      display: inline-block;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .addressList input[type="button"] {
+      background-color: #00C7AE;
+      color: white;
+      cursor: pointer;
+      border-radius: 8px;
+      width: 100px;
+      height: 50px;
+    }
+
+    .addressList input[type="button"]:hover {
+      background-color: #10a391;
+    }
+
+    .infoList {
+      margin-bottom: 20px;
+    }
+
+    .error {
+      color: #bd2130;
+      font-size: 12px;
+    }
+
+    #submit{
+      background-color: #28a745;
+    }
+
+    #submit:hover{
+      background-color: #218838;
+    }

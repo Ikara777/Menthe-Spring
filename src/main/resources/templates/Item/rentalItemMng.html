@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<!-- 스크립트 -->
+<th:block layout:fragment="script">
+  <script th:inline="javascript">
+    $(document).ready(function(){
+        $("#searchBtn").on("click", function(e){
+            e.preventDefault();
+            page(0); // 검색 시 첫 페이지로 이동
+        });
+    });
+
+  function page(page) {
+    const searchSellStatus = document.querySelector("#searchSellStatus").value;
+    const searchBy = document.querySelector("#searchBy").value;
+    const searchQuery = document.querySelector("#searchQuery").value;
+
+    location.href = `/admin/items/${page}?searchSellStatus=${searchSellStatus}&searchBy=${searchBy}&searchQuery=${searchQuery}`;
+  }
+
+function filterByStatus(status) {
+    const searchBy = document.querySelector("select[name='searchBy']").value;
+    const searchQuery = document.querySelector("input[name='searchQuery']").value;
+
+    window.location.href = `/admin/items?searchSellStatus=${status}&searchBy=${searchBy}&searchQuery=${searchQuery}`;
+}
+  </script>
+</th:block>
+
+<!-- CSS -->
+<th:block layout:fragment="css">
+  <style>
+    .btn-group {
+        margin-bottom: 10px;
+    }
+    .form-inline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .table img {
+        width: 50px;
+        height: auto;
+    }
+  </style>
+</th:block>
+
+<div layout:fragment="content">
+  <!-- 판매 상태 필터 버튼 -->
+  <div class="row row-cols-lg-auto g-3 align-items-center">
+    <button class="btn btn-secondary" onclick="filterByStatus('ALL')">전체</button>
+    <button class="btn btn-success" onclick="filterByStatus('SELL')">판매중</button>
+    <button class="btn btn-danger" onclick="filterByStatus('SOLD_OUT')">품절</button>
+  </div>
+
+  <!-- 상품 테이블 -->
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>상품아이디</th>
+      <th>작품 이름</th>
+      <th>상태</th>
+      <th>작가 이름</th>
+      <th>이미지</th>
+      <th>가격</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${items.getContent()}">
+      <td th:text="${item.id}"></td>
+      <td><a th:href="'/admin/rentalItemForm/' + ${item.id}" th:text="${item.artName}"></a></td>
+      <td th:text="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL ? '판매중' : '품절'}"></td>
+      <td th:text="${item.artistName}"></td>
+
+
+      <td>
+
+          <!-- item.imgUrl이 null이 아니거나 비어 있지 않을 때 -->
+          <img th:if="${not #strings.isEmpty(item.imgUrl)}"
+               th:src="${item.imgUrl}"
+               alt="대표 이미지"
+               style="width: 50px; height: auto;">
+
+          <!-- item.imgUrl이 null이거나 비어 있을 때, itemImagesMap에서 첫 번째 이미지를 사용 -->
+          <img th:unless="${not #strings.isEmpty(item.imgUrl)}"
+               th:src="${itemImagesMap[item.id]?.get(0)?.imgUrl}"
+               alt="대체 이미지"
+               style="width: 50px; height: auto;">
+
+      </td>
+
+
+      <td th:text="${item.price}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- 페이지네이션 -->
+  <div th:with="start=${(items.number/maxPage)*maxPage + 1},
+                  end=${(items.totalPages == 0) ? 1 : (start + (maxPage-1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)}">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" th:classappend="${items.first}?'disabled':''">
+        <a th:onclick="'javascript:page(' + (${items.number - 1}) + ')'" class="page-link">이전</a>
+      </li>
+      <li class="page-item" th:each="page : ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page - 1} ? 'active' : ''">
+        <a th:onclick="'javascript:page(' + (${page - 1}) + ')'" class="page-link" th:text="${page}"></a>
+      </li>
+      <li class="page-item" th:classappend="${items.last}?'disabled':''">
+        <a th:onclick="'javascript:page(' + (${items.number + 1}) + ')'" class="page-link">다음</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 검색 필터 -->
+  <div class="row row-cols-lg-auto g-3 align-items-center">
+    <form th:action="@{'/admin/items/0'}" method="get" class="d-flex align-items-center">
+      <select id="searchBy" name="searchBy" class="form-control" style="width:120px; margin-right: 10px;"
+              th:value="${itemSearchDto.searchBy}">
+        <option value="artistName" th:selected="${itemSearchDto.searchBy == 'artistName'}">작가 이름</option>
+        <option value="artName" th:selected="${itemSearchDto.searchBy == 'artName'}">작품 이름</option>
+      </select>
+      <input id="searchQuery" name="searchQuery" type="text" class="form-control" style="width:200px; margin-right: 10px;"
+             placeholder="검색어 입력" th:value="${itemSearchDto.searchQuery}">
+      <input type="hidden" id="searchSellStatus" name="searchSellStatus" th:value="${itemSearchDto.searchSellStatus}">
+      <button type="submit" class="btn btn-primary" style="width:100px;">검색</button>
+    </form>
+  </div>
+
+</div>
+</html>

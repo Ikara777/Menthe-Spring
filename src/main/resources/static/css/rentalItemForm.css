@@ -1,0 +1,106 @@
+body {
+      background-color: #f8f9fa;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 200px;
+    }
+
+    .form-container p {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-control {
+      border-radius: 8px;
+    }
+
+    .input-group-prepend .input-group-text {
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      font-weight: bold;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .fieldError {
+      color: #bd2130;
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+    /* 상품이미지와 파일 선택 칸을 한 줄로 배치 */
+    .file-upload-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .file-upload-group .input-group-text {
+      width: 150px;  /* 레이블의 너비를 고정 */
+      text-align: left;
+    }
+
+    .file-upload-group .form-control {
+      flex: 1;
+      margin-right: 10px;
+    }
+
+    .imageFile {
+      flex: 1;
+    }
+
+    /* 버튼들을 가로로 배치 */
+    .form-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px; /* 버튼 사이 간격 */
+      margin-top: 20px;
+    }
+
+    .form-footer .btn {
+      width: 48%; /* 버튼 크기 조정 */
+    }
+
+    #modify,
+    #submit {
+      background-color: #00C7AE;
+      color: white;
+      border: none;
+    }
+
+    #modify:hover,
+    #submit:hover {
+      background-color: #10a391;
+    }

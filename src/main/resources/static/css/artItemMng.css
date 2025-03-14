@@ -1,0 +1,133 @@
+    /* 전체 레이아웃 개선 */
+    .container {
+      padding: 20px;
+    }
+
+    /* 판매 상태 필터 버튼 그룹 */
+    .row-cols-lg-auto .btn {
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+
+    .row-cols-lg-auto .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+    }
+
+    .row-cols-lg-auto .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+
+    .row-cols-lg-auto .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    /* 테이블 스타일 */
+    table.table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    table.table th, table.table td {
+      padding: 12px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    table.table thead {
+      background-color: #f8f9fa;
+      color: #495057;
+      font-weight: bold;
+    }
+
+    table.table tbody tr:nth-child(odd) {
+      background-color: #f9f9f9;
+    }
+
+    table.table tbody tr:nth-child(even) {
+      background-color: #ffffff;
+    }
+
+    table.table td img {
+      width: 50px;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    /* 페이지네이션 */
+    .pagination {
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .pagination .page-item .page-link {
+      padding: 8px 16px;
+      border-radius: 50%;
+      margin: 0 5px;
+      font-size: 14px;
+    }
+
+    .pagination .page-item.active .page-link {
+      background-color: #007bff;
+      border-color: #007bff;
+      color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+      color: #ccc;
+    }
+
+    /* 검색 필터 스타일 */
+    .form-inline {
+      margin-top: 20px;
+    }
+
+    .form-inline select,
+    .form-inline input {
+      height: 40px;
+    }
+
+    .form-inline button {
+      padding: 8px 15px;
+      font-size: 16px;
+      margin-left: 10px;
+    }
+
+    /* 폼 요소들의 간격 조정 */
+    select, input[type="text"] {
+      margin-right: 10px;
+    }
+
+    /* 작은 화면에서의 레이아웃 수정 */
+    @media (max-width: 767px) {
+      .table th, .table td {
+        padding: 8px;
+        font-size: 12px;
+      }
+
+      .row-cols-lg-auto .btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+
+      .pagination .page-item .page-link {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+
+      .form-inline input, .form-inline select {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+
+
+    a{
+        text-decoration: none;
+    }

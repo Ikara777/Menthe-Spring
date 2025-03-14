@@ -1,0 +1,68 @@
+ .modal-content {
+      border-radius: 10px;
+    }
+
+    .modal-header {
+      background-color: #00C7AE;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    /* 채팅 로그 스타일 */
+    #chatLogs {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+    }
+
+    #chatLogs ul {
+      padding: 0;
+      list-style-type: none;
+    }
+
+    .chat-message {
+      margin-bottom: 10px;
+    }
+
+    .chat-message strong {
+      font-weight: bold;
+    }
+
+    /* 메시지 입력 폼 */
+    #chatForm {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #chatForm textarea {
+      margin-bottom: 10px;
+      resize: none;
+      height: 80px;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    #chatForm button {
+      border-radius: 8px;
+      background-color: #00C7AE;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 1rem;
+    }
+
+    #chatForm button:hover {
+      background-color: #10a391;
+    }

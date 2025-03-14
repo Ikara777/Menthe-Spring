@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refund Request</title>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <link th:href="@{/css/paymentRefund.css}" rel="stylesheet">
+</head>
+<body>
+<h1>PortOne Refund Request</h1>
+
+<div layout:fragment="content">
+
+  <h2>결제 내역</h2>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>결제 UID</th>
+        <th>결제 금액</th>
+        <th>결제 상태</th>
+        <th>주문 번호</th>
+        <th>환불 요청</th>
+        <th>환불</th>
+
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="order : ${orders.content}">
+        <td th:text="${order.impUid}">결제 UID</td>
+        <td th:text="${order.paidAmount}">결제 금액</td>
+        <td th:text="${order.status}">결제 상태</td>
+        <td th:text="${order.merchantUid}">주문 번호</td>
+        <td>
+          <!-- 환불 사유 입력 필드 -->
+          <input type="text" class="form-control refund-reason" placeholder="환불 사유 입력">
+        </td>
+
+
+        <td>
+          <!-- 환불 요청 버튼 또는 환불 완료 표시 -->
+          <button th:unless="${order.status.toString()} == 'CANCEL'"
+                  class="btn btn-primary"
+                  type="button"
+                  onclick="submitRefund(this)">
+            환불 요청
+          </button>
+          <button th:if="${order.status.toString()} == 'CANCEL'"
+                  class="btn btn-danger"
+                  type="button"
+                  disabled>
+            환불 완료
+          </button>
+        </td>
+
+
+      </tr>
+      </tbody>
+    </table>
+
+    <div th:with="start=${(orders.number/maxPage)*maxPage +1},
+             end=${(orders.totalPages == 0) ? 1 : (start + (maxPage-1) < orders.totalPages ?
+             start + (maxPage - 1) : orders.totalPages)}">
+      <ul class="pagination justify-content-center">
+        <!-- Previous 버튼 -->
+        <li class="page-item" th:classappend="${orders.number eq 0} ? 'disabled' : ''">
+          <a th:href="@{'/api/refund/' + ${orders.number - 1}}" aria-label="Previous" class="page-link">
+            <span aria-hidden="true">Previous</span>
+          </a>
+        </li>
+        <!-- 페이지 번호 버튼 -->
+        <li class="page-item" th:each="page : ${#numbers.sequence(start, end)}"
+            th:classappend="${orders.number eq page - 1} ? 'active' : ''">
+          <a th:href="@{'/api/refund/' + ${page - 1}}" th:inline="text" class="page-link" id="page">[[${page}]]</a>
+        </li>
+        <!-- Next 버튼 -->
+        <li class="page-item" th:classappend="${orders.number + 1 ge orders.totalPages} ? 'disabled' : ''">
+          <a th:href="@{'/api/refund/' + ${orders.number + 1}}" aria-label="Next" class="page-link">
+            <span aria-hidden="true">Next</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+<th:block layout:fragment="script">
+
+  <script th:inline="javascript">
+
+    //-------------- 채팅 연결 차단 스크립트 ----------------------
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const currentUrl = window.location.pathname; // 현재 URL 경로
+
+      // 제외할 경로 패턴
+      const excludedPatterns = [
+        "/myRent",
+        "/api/refund",
+        "/cash-summary/balance",
+        "/myInfo/update/",
+        "/bid/my-bids/",
+        "/bid/success/",
+        "/cash-summary/balance"
+      ];
+
+      // 경로가 제외 목록의 패턴으로 시작하면 숨기기
+      if (excludedPatterns.some(pattern => currentUrl.startsWith(pattern))) {
+        const chatContainer = document.getElementById("chat-container");
+        if (chatContainer) {
+          chatContainer.style.display = "none"; // 숨기기
+        }
+      }
+    });
+
+    //----------------------------------------------------
+
+  function submitRefund(button) {
+    // CSRF 토큰 및 헤더 가져오기
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    // 버튼이 속한 행(row) 찾기
+    var row = $(button).closest("tr");
+
+    // 행에서 데이터 가져오기
+    const impUid = row.find("td").eq(0).text().trim();
+    const reason = row.find(".refund-reason").val().trim();
+    const amount = row.find("td").eq(1).text().trim();
+
+    // 데이터 유효성 검증
+    if (!reason) {
+      alert("환불 사유를 입력해주세요.");
+      return;
+    }
+
+    // Ajax 요청
+    $.ajax({
+      url: "/api/refund/process",
+      method: "POST",
+      headers: { "Content-Type": "application/json", [header]: token },
+      data: JSON.stringify({
+        impUid: impUid,
+        reason: reason,
+        amount: parseInt(amount)
+      }),
+      success: function (result) {
+        alert("환불 요청 결과: " + JSON.stringify(result));
+        location.reload();
+      },
+      error: function (error) {
+        console.error("환불 요청 중 오류 발생:", error);
+        alert("환불 요청 중 오류가 발생했습니다.");
+      }
+    });
+  }
+  </script>
+
+</th:block>
+</body>
+</html>

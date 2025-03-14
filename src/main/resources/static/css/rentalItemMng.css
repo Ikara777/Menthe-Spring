@@ -1,0 +1,79 @@
+.btn-group {
+        margin-bottom: 15px;
+    }
+
+    /* 필터 버튼 스타일 */
+    .row-cols-lg-auto .btn {
+        font-size: 14px;
+        padding: 8px 15px;
+        border-radius: 5px;
+    }
+
+    .row-cols-lg-auto .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+    .row-cols-lg-auto .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    .row-cols-lg-auto .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    /* 테이블 스타일 */
+    .table {
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    .table thead {
+        background-color: #f8f9fa;
+        color: #495057;
+    }
+    .table th, .table td {
+        vertical-align: middle;
+        padding: 12px;
+        text-align: center;
+    }
+    .table td img {
+        border-radius: 5px;
+        width: 50px;
+        height: auto;
+    }
+
+    /* 페이지네이션 스타일 */
+    .pagination {
+        margin-top: 20px;
+        justify-content: center;
+    }
+    .pagination .page-item .page-link {
+        border-radius: 50%;
+        padding: 8px 16px;
+        margin: 0 5px;
+    }
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+    .pagination .page-item.disabled .page-link {
+        color: #ccc;
+    }
+
+    /* 검색 필터 스타일 */
+    .form-inline {
+        margin-top: 20px;
+    }
+    .form-inline select, .form-inline input {
+        height: 40px;
+    }
+    .form-inline button {
+        padding: 8px 15px;
+        font-size: 16px;
+    }
+    a{
+      text-decoration: none;
+
+    }

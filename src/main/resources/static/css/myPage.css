@@ -1,0 +1,144 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.container {
+    max-width: 2000px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 탭 버튼 스타일 */
+ul.subMenu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 20px;
+}
+
+li {
+    display: inline-block;
+}
+
+.tab {
+    display: inline-block;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #333;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background-color: transparent;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.tab a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.tab:hover,
+.tab.active {
+    color: #5BB575;
+    border-bottom: 2px solid #5BB575;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 열 너비 균등 분배 */
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    word-wrap: break-word; /* 긴 텍스트 줄바꿈 */
+}
+
+th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+}
+
+td {
+    background-color: #fff;
+}
+
+/* 환불 칸 */
+table th:nth-child(7),
+table td:nth-child(7) {
+    width: 150px;
+}
+
+/* 테이블 안 버튼 스타일 */
+button.btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+}
+
+button.btn-danger:hover {
+    background-color: #c82333;
+}
+
+img {
+    max-width: 100%; /* 부모 요소의 너비를 넘지 않도록 설정 */
+    height: auto;    /* 이미지의 비율을 유지하며 자동으로 높이를 조정 */
+}
+
+/* 기본 버튼 스타일 */
+.confirm-purchase-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* "구매 확정" 버튼 스타일 (빨간색) */
+.confirm-purchase-btn.pending {
+    background-color: #dc3545; /* 빨간색 */
+    color: #fff;
+}
+
+/* "확인 완료" 버튼 스타일 (초록색) */
+.confirm-purchase-btn.confirmed {
+    background-color: #198754; /* 초록색 */
+    color: white;
+}
+
+.confirm-purchase-btn.pending:hover {
+    background-color: #c82333;
+}
+
+confirm-purchase-btn.confirmed:hover {
+    background-color: #146c43;
+}
+
+/* 채팅창 안보이게 하는 명령 */
+.myBid {
+     display: none;
+}

@@ -1,0 +1,181 @@
+   /*--------------------*/
+
+        /* 전체 폰트 설정 */
+        body {
+            font-family: 'Pretendard', 'Gmarket Sans', sans-serif;
+        }
+
+        .table-container {
+            margin: 20px auto;
+            width: 90%;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+
+        .rank {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            color: #333;
+            margin: 15px 0;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table th {
+            font-weight: 700;
+            text-transform: uppercase;
+            background-color: #f4f4f4;
+            color: #444;
+            padding: 10px;
+            border-bottom: 2px solid #ddd;
+            border-top: 2px solid #ddd;
+        }
+
+        .table td {
+            padding: 12px;
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid #eee;
+            color: #555;
+        }
+
+        .table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .table img {
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th:first-child, .table td:first-child {
+            border-left: none;
+        }
+
+        .table th:last-child, .table td:last-child {
+            border-right: none;
+        }
+
+        .table th {
+            text-align: center;
+            border-radius: 0;
+        }
+
+        .table td {
+            border-radius: 0;
+        }
+
+
+        /*--------------------*/
+
+        .fc-day-sun a {
+            color: #f05650;
+            text-decoration: none;
+
+        }
+
+        /* 토요일 날짜: 파란색 */
+        .fc-day-sat a {
+            color: #0047AB;
+            text-decoration: none;
+        }
+
+        /* 나머지 날짜: 검정색 */
+        .fc-day-mon a {
+            color: #212529;
+            text-decoration: none;
+        }
+        .fc-day-tue a {
+            color: black;
+            text-decoration: none;
+        }
+        .fc-day-wed a {
+            color: black;
+            text-decoration: none;
+        }
+        .fc-day-thu a {
+            color: black;
+            text-decoration: none;
+        }
+        .fc-day-fri a {
+            color: black;
+            text-decoration: none;
+        }
+        .fc-daygrid-event-dot{
+            display: none;
+        }
+        .fc-col-header-cell{
+            background-color: #f7fafc;
+        }
+        .fc-toolbar-title{
+            font-weight: 700;
+        }
+
+    .middleImgOne {
+        max-width: 100%; /* 부모 요소 너비에 맞춤 */
+        height: auto;    /* 비율 유지 */
+        display: block;  /* 중앙 정렬을 위해 블록 요소로 변경 */
+        margin: 0 auto;  /* 수평 중앙 정렬 */
+        max-height: 1200px; /* 너무 크면 최대 높이 제한 */
+    }
+
+    .middleImgTwo {
+        max-width: 100%; /* 부모 요소 너비에 맞춤 */
+        height: auto;    /* 비율 유지 */
+        display: block;  /* 중앙 정렬을 위해 블록 요소로 변경 */
+        margin: 0 auto;  /* 수평 중앙 정렬 */
+        max-height: 1200px; /* 너무 크면 최대 높이 제한 */
+    }
+
+
+
+    .topImg {
+        max-width: 100%; /* 부모 요소 너비에 맞춤 */
+        height: auto;    /* 비율 유지 */
+        display: block;  /* 중앙 정렬을 위해 블록 요소로 변경 */
+        margin: 0 auto;  /* 수평 중앙 정렬 */
+        max-height: 1200px; /* 너무 크면 최대 높이 제한 */
+    }
+
+    .lowImg {
+        max-width: 80%;
+        height: auto;    /* 비율 유지 */
+        display: block;  /* 중앙 정렬을 위해 블록 요소로 변경 */
+        margin: 0 auto;  /* 수평 중앙 정렬 */
+        max-height: 1200px; /* 너무 크면 최대 높이 제한 */
+    }
+
+
+    .videoBackColor{
+
+    }
+
+
+    .videoController {
+        position: relative;
+        width: 100%;
+        max-width: 1200px; /* 최대 너비 */
+        margin: 0 auto; /* 중앙 정렬 */
+        border-radius: 20px; /* 둥근 모서리 */
+        overflow: hidden; /* 둥근 모서리 밖 숨기기 */
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* 드롭 섀도우 효과 */
+    }
+
+    .topVideo {
+        width: 100%; /* 부모 요소 너비에 맞춤 */
+        height: 90%; /* 비율 유지 */
+        display: block; /* 블록 요소로 설정 */
+        outline: none; /* 포커스 테두리 제거 */
+    }
+
+    #calendar {
+       margin : 40px;
+       margin-right : 110px;
+       margin-left :  110px;
+    }

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<!-- 사용자 CSS 추가 -->
+<head>
+  <link th:href="@{/css/rentalItem.css}" rel="stylesheet">
+</head>
+
+<div layout:fragment="content">
+  <!-- 검색 및 정렬 기능 -->
+  <form th:action="@{/rental}" method="get" class="text-center margin">
+    <!-- 검색 필드 -->
+    <div class="form-group d-inline-block">
+      <select name="searchBy" class="form-control d-inline-block" style="width: 150px;">
+        <option value="artName" th:selected="${searchBy == 'artName'}">작품 이름</option>
+        <option value="artistName" th:selected="${searchBy == 'artistName'}">작가 이름</option>
+      </select>
+      <input type="text" name="searchQuery" th:value="${itemSearchDto.searchQuery}" placeholder="검색어 입력" class="form-control d-inline-block" style="width: 300px;">
+    </div>
+
+    <!-- 정렬 버튼 -->
+    <div class="form-group d-inline-block">
+      <button type="submit" name="sort" value="priceAsc" class="btn btn-outline-secondary" th:classappend="${sort == 'priceAsc'} ? 'active' : ''">가격 낮은 순</button>
+      <button type="submit" name="sort" value="priceDesc" class="btn btn-outline-secondary" th:classappend="${sort == 'priceDesc'} ? 'active' : ''">가격 높은 순</button>
+    </div>
+  </form>
+
+  <!-- 검색 결과 메시지 -->
+  <div th:if="${not #strings.isEmpty(itemSearchDto.searchQuery)}" class="center">
+    <p class="h3 font-weight-bold" th:text="'검색어: ' + ${itemSearchDto.searchQuery}"></p>
+  </div>
+
+  <!-- RentalItem 리스트 출력 -->
+  <div th:if="${items.totalElements > 0}" class="container text-center">
+    <div class="row row-cols-5">
+      <th:block th:each="item : ${items.getContent()}">
+        <div class="col">
+          <div class="card">
+            <a th:href="@{'/rental/' + ${item.id}}" class="text-dark">
+
+
+              <!-- 이미지 대체 코드 -->
+              <img th:if="${not #strings.isEmpty(item.imgUrl)}"
+                   th:src="${item.imgUrl}"
+                   class="card-img-top"
+                   th:alt="${item.artName}"
+                   height="300"
+                   width="400">
+
+              <img th:unless="${not #strings.isEmpty(item.imgUrl)}"
+                   th:src="${itemImagesMap[item.id]?.get(0)?.imgUrl ?: '/default/image/path.jpg'}"
+                   class="card-img-top"
+                   th:alt="${item.artName}"
+                   height="300"
+                   width="400">
+
+
+              <div class="card-body">
+                <h4 class="card-title">[[${item.artistName}]]</h4>
+                <p class="card-text">[[${item.artName}]]</p>
+                <h3 class="card-title" id="cart-price">KRW<br>[[${item.price}]]</h3>
+              </div>
+
+
+            </a>
+          </div>
+        </div>
+      </th:block>
+    </div>
+  </div>
+
+  <!-- 검색 결과 없음 메시지 -->
+  <div th:if="${items.totalElements == 0}" class="text-center">
+    <p class="h4 text-muted">검색 결과가 없습니다.</p>
+  </div>
+
+  <!-- 페이지네이션 -->
+  <div th:with="start=${(items.number / maxPage) * maxPage + 1},
+                end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" th:classappend="${items.number == 0} ? 'disabled'">
+        <a th:href="@{'/rental' + '?searchBy=' + ${searchBy} + '&searchQuery=' + ${itemSearchDto.searchQuery} + '&sort=' + ${sort} + '&page=' + ${items.number - 1}}"
+           aria-label="Previous" class="page-link">
+          <span aria-hidden="true">Previous</span>
+        </a>
+      </li>
+      <li class="page-item" th:each="page : ${#numbers.sequence(start, end)}"
+          th:classappend="${items.number == page - 1} ? 'active' : ''">
+        <a th:href="@{'/rental' + '?searchBy=' + ${searchBy} + '&searchQuery=' + ${itemSearchDto.searchQuery} + '&sort=' + ${sort} + '&page=' + ${page - 1}}"
+           th:inline="text" class="page-link">[[${page}]]</a>
+      </li>
+      <li class="page-item" th:classappend="${items.number + 1 >= items.totalPages} ? 'disabled'">
+        <a th:href="@{'/rental' + '?searchBy=' + ${searchBy} + '&searchQuery=' + ${itemSearchDto.searchQuery} + '&sort=' + ${sort} + '&page=' + ${items.number + 1}}"
+           aria-label="Next" class="page-link">
+          <span aria-hidden="true">Next</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+</html>
