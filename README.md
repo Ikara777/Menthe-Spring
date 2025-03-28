@@ -48,8 +48,8 @@
     <th>로그인 </th>
   </tr>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/1279557b-64e0-4984-b4ce-d51a253e7268" width="300"></td>
-    <td><img src="https://github.com/user-attachments/assets/3b2548e7-7e78-40b4-b2a0-9610937eb866" width="300"></td>
+    <td><img src="https://github.com/user-attachments/assets/1279557b-64e0-4984-b4ce-d51a253e7268" width="400"></td>
+    <td><img src="https://github.com/user-attachments/assets/3b2548e7-7e78-40b4-b2a0-9610937eb866" width="400"></td>
   </tr>
 </table>
 
@@ -59,8 +59,8 @@
     <th>응찰 현황</th>
   </tr>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/77fb4f2e-e8ab-4f03-baa2-654a74b00787" width="200"></td>
-    <td><img src="https://github.com/user-attachments/assets/34196532-d271-4f1c-8941-b301c87a090e" width="200"></td>
+    <td><img src="https://github.com/user-attachments/assets/77fb4f2e-e8ab-4f03-baa2-654a74b00787" width="400"></td>
+    <td><img src="https://github.com/user-attachments/assets/34196532-d271-4f1c-8941-b301c87a090e" width="400"></td>
   </tr>
 </table>
 
@@ -70,8 +70,8 @@
     <th>캐시 잔액조회</th>
   </tr>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/df7e9092-8b81-4e09-b2db-07498d1244f3" width="200"></td>
-    <td><img src="https://github.com/user-attachments/assets/561b8f7b-d1ae-4a32-847e-e01aa09dbaeb" width="200"></td>
+    <td><img src="https://github.com/user-attachments/assets/df7e9092-8b81-4e09-b2db-07498d1244f3" width="400"></td>
+    <td><img src="https://github.com/user-attachments/assets/561b8f7b-d1ae-4a32-847e-e01aa09dbaeb" width="400"></td>
   </tr>
 </table>
 
