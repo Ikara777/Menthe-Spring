@@ -1,4 +1,4 @@
-# Menthe-Spring
+# Menthe
 
 ## Spring Boot + Java를 활용한 실시간 미술품 경매 서비스
 
