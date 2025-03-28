@@ -11,10 +11,7 @@
 공간을 만들고 일상에 색다른 감동을 줄 수 있습니다.
 
 ## 👨‍💻👨🏻‍💻 팀원
-| title1 | title2 |
-| --- | --- |
-| ![boy_6957203](https://github.com/user-attachments/assets/66037df4-f7e3-433e-92a5-17b40556ae2f) | ![anonymous-man_11194603](https://github.com/user-attachments/assets/a70b3182-d9d1-47c8-a0fc-711353348915)
- |
+<-- -->
 
 <table>
   <tr>
