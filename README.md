@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/95bc8d31-7982-4c12-8e6d-2bafeef6adf1)![image](https://github.com/user-attachments/assets/69494364-46bb-4b53-963c-4d401af2c5ba)# Menthe-Spring
+# Menthe-Spring
 
 ## Spring Boot + Java를 활용한 실시간 미술품 경매 서비스
 
@@ -16,6 +16,16 @@
 | ![boy_6957203](https://github.com/user-attachments/assets/66037df4-f7e3-433e-92a5-17b40556ae2f) | ![anonymous-man_11194603](https://github.com/user-attachments/assets/a70b3182-d9d1-47c8-a0fc-711353348915)
  |
 
+<table>
+  <tr>
+    <th>최동훈</th>
+    <th>심현철</th>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/66037df4-f7e3-433e-92a5-17b40556ae2f" width="100"></td>
+    <td><img src="https://github.com/user-attachments/assets/a70b3182-d9d1-47c8-a0fc-711353348915" width="100"></td>
+  </tr>
+</table>
 
 
 ## 🛠 주요 기능
