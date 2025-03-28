@@ -48,8 +48,8 @@
     <th>로그인 </th>
   </tr>
   <tr>
-    <td><img src="!https://github.com/user-attachments/assets/fee59201-7357-47a9-8634-a94d7d5d0ebd" width="200"></td>
-    <td><img src="https://github.com/user-attachments/assets/3b2548e7-7e78-40b4-b2a0-9610937eb866" width="200"></td>
+    <td><img src="![메인화면](https://github.com/user-attachments/assets/1279557b-64e0-4984-b4ce-d51a253e7268)" width="300"></td>
+    <td><img src="https://github.com/user-attachments/assets/3b2548e7-7e78-40b4-b2a0-9610937eb866" width="300"></td>
   </tr>
 </table>
 
@@ -59,8 +59,8 @@
     <th>응찰 현황</th>
   </tr>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/66037df4-f7e3-433e-92a5-17b40556ae2f" width="200"></td>
-    <td><img src="https://github.com/user-attachments/assets/a70b3182-d9d1-47c8-a0fc-711353348915" width="200"></td>
+    <td><img src="![상품 페이지](https://github.com/user-attachments/assets/77fb4f2e-e8ab-4f03-baa2-654a74b00787)" width="200"></td>
+    <td><img src="![응찰 현황](https://github.com/user-attachments/assets/34196532-d271-4f1c-8941-b301c87a090e)" width="200"></td>
   </tr>
 </table>
 
@@ -70,8 +70,8 @@
     <th>캐시 잔액조회</th>
   </tr>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/66037df4-f7e3-433e-92a5-17b40556ae2f" width="200"></td>
-    <td><img src="https://github.com/user-attachments/assets/a70b3182-d9d1-47c8-a0fc-711353348915" width="200"></td>
+    <td><img src="![1대1 상담기능](https://github.com/user-attachments/assets/df7e9092-8b81-4e09-b2db-07498d1244f3)" width="200"></td>
+    <td><img src="![캐시 잔액 조회](https://github.com/user-attachments/assets/561b8f7b-d1ae-4a32-847e-e01aa09dbaeb)" width="200"></td>
   </tr>
 </table>
 
