@@ -110,7 +110,7 @@ Imp 결제 번호를 저장
 - 악성 파일 업로드를 방지하기 위해 업로드 용량 제한 및 jpg 형식만 허용
 
 ## 사이트 흐름 구성도
-<img src="![image](https://github.com/user-attachments/assets/3b696ef3-9cd7-465e-b89f-ffec9c80cb58)" width="400">
+<img src="![사이트 흐름도](https://github.com/user-attachments/assets/e636f091-c3d2-493b-8ef1-e46dd3023725)" width="400">
 
 ## DB 다이어그램
 <img src="https://github.com/user-attachments/assets/afd4478c-5bed-4b22-847e-ac9092aa1118" width="400">
