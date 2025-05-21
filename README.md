@@ -21,7 +21,7 @@
     <th>심현철</th>
   </tr>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/66037df4-f7e3-433e-92a5-17b40556ae2f" width="100"></td>
+    <td><img src="C:\Users\arsis\Downloads\사이트 흐름도.png" width="100"></td>
     <td><img src="https://github.com/user-attachments/assets/a70b3182-d9d1-47c8-a0fc-711353348915" width="100"></td>
   </tr>
 </table>
