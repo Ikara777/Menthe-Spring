@@ -110,7 +110,7 @@ Imp 결제 번호를 저장
 - 악성 파일 업로드를 방지하기 위해 업로드 용량 제한 및 jpg 형식만 허용
 
 ## 사이트 흐름 구성도
-![사이트 흐름도](https://github.com/user-attachments/assets/c56d143d-8785-45ff-887d-d12b3472e817)
+<img src="https://github.com/user-attachments/assets/c56d143d-8785-45ff-887d-d12b3472e817" width="400">
 
 
 ## DB 다이어그램
@@ -124,7 +124,7 @@ Imp 결제 번호를 저장
     <th>로그인 </th>
   </tr>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/1279557b-64e0-4984-b4ce-d51a253e7268" width="400"></td>
+    <td><img src="https://github.com/user-attachments/assets/1279557b-64e0-4984-b4ce-d51a253e7268" width="700"></td>
     <td><img src="https://github.com/user-attachments/assets/3b2548e7-7e78-40b4-b2a0-9610937eb866" width="400"></td>
   </tr>
 </table>
