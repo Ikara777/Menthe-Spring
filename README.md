@@ -21,7 +21,7 @@
     <th>심현철</th>
   </tr>
   <tr>
-    <td><img src="file:///C:/Users/arsis/Downloads/%EC%82%AC%EC%9D%B4%ED%8A%B8%20%ED%9D%90%EB%A6%84%EB%8F%84.png" width="100"></td>
+    <td><img src="https://github.com/user-attachments/assets/66037df4-f7e3-433e-92a5-17b40556ae2f" width="100"></td>
     <td><img src="https://github.com/user-attachments/assets/a70b3182-d9d1-47c8-a0fc-711353348915" width="100"></td>
   </tr>
 </table>
@@ -110,7 +110,8 @@ Imp 결제 번호를 저장
 - 악성 파일 업로드를 방지하기 위해 업로드 용량 제한 및 jpg 형식만 허용
 
 ## 사이트 흐름 구성도
-<img src="![사이트 흐름도](https://github.com/user-attachments/assets/e636f091-c3d2-493b-8ef1-e46dd3023725)" width="400">
+![사이트 흐름도](https://github.com/user-attachments/assets/c56d143d-8785-45ff-887d-d12b3472e817)
+
 
 ## DB 다이어그램
 <img src="https://github.com/user-attachments/assets/afd4478c-5bed-4b22-847e-ac9092aa1118" width="400">
