@@ -26,6 +26,31 @@
   </tr>
 </table>
 
+## 🖱 사용 기술
+
+**Back-end**
+   - 언어: Java
+   - 프레임워크: Spring Boot, Spring Security, Spring Data JPA
+   - 서버: Tomcat 9.0
+   - 데이터베이스: MySQL 8.0
+   - 템플릿 엔진: Thymeleaf
+
+**Front-end**
+   - 언어 : JavaScript, HTML5, CSS
+   - 반응형 웹 디자인 구현 : Bootstrap
+   - RESTful API 연동
+     
+**개발 도구 및 환경**
+   - IDE : IntelliJ IDEA
+   - 버전 관리 : Git, GitHub
+   - 빌드 도구 : Maven
+   - 운영체제 : Windows 10
+     
+**배포 및 인프라**
+  - AWS EC2 클라우드 서버 활용
+  - PuTTYgen을 통한 SSH 접속
+  - FileZilla를 통한 파일 전송
+
 
 ## 🛠 주요 기능
 
@@ -83,6 +108,9 @@ Imp 결제 번호를 저장
 **📸이미지 저장 기능**
 - 업로드 경로를 사용자가 수정하지 못하도록 파일명을 UUID로 변환
 - 악성 파일 업로드를 방지하기 위해 업로드 용량 제한 및 jpg 형식만 허용
+
+## 사이트 흐름 구성도
+<img src="![image](https://github.com/user-attachments/assets/3b696ef3-9cd7-465e-b89f-ffec9c80cb58)" width="400">
 
 ## DB 다이어그램
 <img src="https://github.com/user-attachments/assets/afd4478c-5bed-4b22-847e-ac9092aa1118" width="400">
